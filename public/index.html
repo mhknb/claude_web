@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Niş Fikir Bulucu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="#/kesif">Niş Fikir Bulucu</a>
+      <div id="sources" class="sources"></div>
+    </div>
+    <nav class="wrap tabs">
+      <a href="#/profil" data-tab="profil">1. Profil</a>
+      <a href="#/kesif" data-tab="kesif">2. Niş keşfi</a>
+      <a href="#/dogrula" data-tab="dogrula">3. Fikir doğrula</a>
+      <a href="#/gecmis" data-tab="gecmis">Geçmiş</a>
+    </nav>
+  </header>
+
+  <main class="wrap" id="app"></main>
+
+  <template id="tpl-profil">
+    <section class="card">
+      <h1>Kurucu profili</h1>
+      <p class="muted">Fikirler bu bilgilere göre süzülür: “bunu biz yapabilir ve satabilir miyiz?” Bilgiler sadece bu bilgisayarda saklanır.</p>
+      <form id="profile-form" class="form">
+        <fieldset>
+          <legend>Hangi pazar?</legend>
+          <label class="inline"><input type="radio" name="market" value="TR"> Türkiye</label>
+          <label class="inline"><input type="radio" name="market" value="GLOBAL"> Global (İngilizce)</label>
+          <label class="inline"><input type="radio" name="market" value="BOTH" checked> İkisi de</label>
+        </fieldset>
+        <fieldset>
+          <legend>Hangi ürün türleri olabilir?</legend>
+          <label class="inline"><input type="checkbox" name="product_types" value="mobil uygulama" checked> Mobil uygulama</label>
+          <label class="inline"><input type="checkbox" name="product_types" value="SaaS" checked> SaaS</label>
+          <label class="inline"><input type="checkbox" name="product_types" value="yapay zeka aracı" checked> Yapay zeka aracı</label>
+          <label class="inline"><input type="checkbox" name="product_types" value="tarayıcı eklentisi"> Tarayıcı eklentisi</label>
+          <label class="inline"><input type="checkbox" name="product_types" value="web uygulaması"> Web uygulaması</label>
+        </fieldset>
+        <label>Ekip
+          <input name="team" placeholder="ör. 2 kişi: biri yazılımcı, biri pazarlamacı">
+        </label>
+        <label>Neleri iyi yapıyorsunuz?
+          <textarea name="skills" rows="2" placeholder="ör. iOS ve web geliştirme, sosyal medya içeriği, satış"></textarea>
+        </label>
+        <label>Bildiğiniz sektörler, ilgi alanları, erişiminiz olan topluluklar
+          <textarea name="domain" rows="3" placeholder="ör. 10 yıl muhasebe deneyimi, diyetisyen arkadaş çevresi, 5 bin takipçili Instagram hesabı"></textarea>
+        </label>
+        <div class="row">
+          <label>Haftalık ayrılabilecek saat
+            <input name="weekly_hours" type="number" min="1" placeholder="ör. 20">
+          </label>
+          <label>Başlangıç bütçesi
+            <input name="budget" placeholder="ör. 2.000 $">
+          </label>
+          <label>12 ay içinde aylık gelir hedefi
+            <input name="revenue_goal" placeholder="ör. 5.000 $ / ay">
+          </label>
+        </div>
+        <label>Müşteri tipi
+          <select name="customer_type">
+            <option value="fark etmez">Fark etmez</option>
+            <option value="B2B (işletmeler)">B2B (işletmeler)</option>
+            <option value="B2C (bireyler)">B2C (bireyler)</option>
+          </select>
+        </label>
+        <label>Girmek istemediğiniz alanlar
+          <textarea name="avoid" rows="2" placeholder="ör. kumar, kripto, sağlık teşhisi"></textarea>
+        </label>
+        <div class="actions"><button class="primary" type="submit">Kaydet</button><span id="profile-saved" class="muted"></span></div>
+      </form>
+    </section>
+  </template>
+
+  <template id="tpl-kesif">
+    <section class="card">
+      <h1>Niş keşfi</h1>
+      <p class="muted">Gerçek verilere bakarak para veren kitlelerin çözülmemiş problemlerini arar ve aday fikirleri puanlar. Bir alan yazabilir veya boş bırakabilirsiniz.</p>
+      <form id="discover-form" class="form">
+        <label>Alan veya tema (isteğe bağlı)
+          <input name="theme" placeholder="ör. küçük işletme muhasebesi, evcil hayvan sahipleri, freelance tasarımcılar">
+        </label>
+        <label>Ek not (isteğe bağlı)
+          <textarea name="notes" rows="2" placeholder="ör. abonelik modeli tercih ediyoruz"></textarea>
+        </label>
+        <div class="row">
+          <label>Aday sayısı
+            <select name="count"><option>5</option><option selected>8</option><option>10</option></select>
+          </label>
+          <div class="model-slot"></div>
+        </div>
+        <div class="actions"><button class="primary" type="submit">Nişleri ara</button><span class="muted">Yaklaşık 10-20 dakika sürer.</span></div>
+        <p class="error" hidden></p>
+      </form>
+    </section>
+  </template>
+
+  <template id="tpl-dogrula">
+    <section class="card">
+      <h1>Fikir doğrula</h1>
+      <p class="muted">Kendi fikrinizi yazın. Problem, hedef kitle, rakipler, konumlandırma, ASO/SEO kelimeleri, gelir hesabı, riskler ve test planından oluşan tam bir rapor çıkar.</p>
+      <form id="validate-form" class="form">
+        <label>Fikir
+          <textarea name="idea" rows="5" required placeholder="ör. Diyetisyenler için danışanlarının yemek fotoğraflarını yapay zekayla analiz edip haftalık rapor çıkaran mobil uygulama."></textarea>
+        </label>
+        <div class="row"><div class="model-slot"></div></div>
+        <div class="actions"><button class="primary" type="submit">Doğrula</button><span class="muted">Yaklaşık 10-20 dakika sürer.</span></div>
+        <p class="error" hidden></p>
+      </form>
+    </section>
+  </template>
+
+  <template id="tpl-model">
+    <label>Model
+      <select name="model"></select>
+    </label>
+    <label>Araştırma derinliği
+      <select name="effort">
+        <option value="medium">Normal (daha ucuz)</option>
+        <option value="high" selected>Derin (önerilen)</option>
+        <option value="xhigh">Çok derin (daha pahalı)</option>
+      </select>
+    </label>
+  </template>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
