@@ -1,0 +1,436 @@
+{
+ "type": "object",
+ "properties": {
+  "tur": {
+   "type": "string",
+   "const": "pivot"
+  },
+  "meta": {
+   "type": "object",
+   "description": "Rapor bilgileri",
+   "properties": {
+    "baslik": {
+     "type": "string"
+    },
+    "tarih": {
+     "type": "string",
+     "description": "YYYY-AA-GG"
+    },
+    "pazar": {
+     "type": "string",
+     "enum": [
+      "Türkiye",
+      "Global",
+      "İkisi"
+     ]
+    },
+    "kullanilan_kaynaklar": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Bu analizde gerçekten kullanılan veri kaynakları/araçlar"
+    },
+    "sinirlamalar": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Ortamın yapamadığı ve bu yüzden eksik kalanlar"
+    }
+   },
+   "required": [
+    "baslik",
+    "tarih"
+   ]
+  },
+  "root_causes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "weakness": {
+      "type": "string",
+      "description": "Zayıf bileşen veya sorun"
+     },
+     "cause_type": {
+      "type": "string",
+      "enum": [
+       "değiştirilemez",
+       "zamanla düzelir",
+       "bilgi eksikliği",
+       "düzeltilebilir"
+      ],
+      "description": "Kök neden türü"
+     },
+     "explanation": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "weakness",
+     "cause_type",
+     "explanation"
+    ],
+    "additionalProperties": false
+   },
+   "description": "Zayıflıkların kök nedenleri"
+  },
+  "options": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "title": {
+      "type": "string",
+      "description": "Pivot adı"
+     },
+     "changed_variables": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "hedef kitle",
+        "niş",
+        "fiyat modeli",
+        "özellik odağı",
+        "platform",
+        "pazar/ülke",
+        "konumlandırma"
+       ]
+      },
+      "description": "Değişen 1-2 değişken"
+     },
+     "new_idea": {
+      "type": "string",
+      "description": "Yeni fikrin tek paragraf tanımı (doğrulamaya gönderilecek metin)"
+     },
+     "new_target_audience": {
+      "type": "string"
+     },
+     "new_positioning": {
+      "type": "string"
+     },
+     "why_better": {
+      "type": "string",
+      "description": "Hangi zayıflığı nasıl düzeltiyor"
+     },
+     "evidence": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "claim": {
+         "type": "string",
+         "description": "Kanıtlanan iddia, kısa"
+        },
+        "url": {
+         "type": "string",
+         "description": "Kaynak linki. Kaynak yoksa boş bırakma, iddiayı hiç yazma."
+        }
+       },
+       "required": [
+        "claim",
+        "url"
+       ],
+       "additionalProperties": false
+      },
+      "description": "Kanıtlar"
+     },
+     "kept_strengths": {
+      "type": "string",
+      "description": "Korunan güçlü yön"
+     },
+     "effort": {
+      "type": "string",
+      "enum": [
+       "düşük",
+       "orta",
+       "yüksek"
+      ],
+      "description": "Gereken çaba"
+     },
+     "scores": {
+      "type": "object",
+      "description": "Her bileşen 0-10. Yüksek puan her zaman iyi demektir.",
+      "properties": {
+       "pain": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Problemin acısı ve sıklığı: 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "willingness_to_pay": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Para verme isteği (kanıtlı): 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "market_room": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Pazarda yer var mı (doygun değil): 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "reachability": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Kitleye ucuza ulaşılabilir mi: 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "giant_safety": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Devlerden ve yapay zeka şirketlerinden güvenli mi: 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "buildability": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "1-2 kişi + yapay zeka ile yapılabilir mi: 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "founder_fit": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Kurucu profiline uygun mu: 0-10 arası tam sayı"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "reason"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "required": [
+       "pain",
+       "willingness_to_pay",
+       "market_room",
+       "reachability",
+       "giant_safety",
+       "buildability",
+       "founder_fit"
+      ],
+      "additionalProperties": false
+     },
+     "legal_risk": {
+      "type": "string",
+      "enum": [
+       "düşük",
+       "orta",
+       "yüksek"
+      ]
+     }
+    },
+    "required": [
+     "title",
+     "changed_variables",
+     "new_idea",
+     "new_target_audience",
+     "new_positioning",
+     "why_better",
+     "evidence",
+     "kept_strengths",
+     "effort",
+     "scores",
+     "legal_risk"
+    ],
+    "additionalProperties": false
+   },
+   "description": "2-3 pivot seçeneği"
+  },
+  "recommendation": {
+   "type": "string",
+   "description": "Hangisi öneriliyor ve neden. Hiçbiri iyi değilse açıkça söyle."
+  },
+  "ek_grafikler": {
+   "type": "array",
+   "description": "İsteğe bağlı ek grafikler (Chart.js). Sadece gerçek veriyle.",
+   "items": {
+    "type": "object",
+    "properties": {
+     "baslik": {
+      "type": "string"
+     },
+     "tur": {
+      "type": "string",
+      "enum": [
+       "bar",
+       "line",
+       "pie",
+       "doughnut",
+       "radar",
+       "scatter"
+      ]
+     },
+     "etiketler": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "seriler": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "ad": {
+         "type": "string"
+        },
+        "veri": {
+         "type": "array"
+        }
+       },
+       "required": [
+        "ad",
+        "veri"
+       ]
+      }
+     },
+     "aciklama": {
+      "type": "string",
+      "description": "Grafiğin ne gösterdiği ve verinin kaynağı"
+     },
+     "kaynak_url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "baslik",
+     "tur",
+     "seriler"
+    ]
+   }
+  },
+  "ek_bolumler": {
+   "type": "array",
+   "description": "İsteğe bağlı ek bölümler (düz metin/markdown benzeri; HTML kabul edilmez)",
+   "items": {
+    "type": "object",
+    "properties": {
+     "baslik": {
+      "type": "string"
+     },
+     "metin": {
+      "type": "string"
+     },
+     "tablo": {
+      "type": "object",
+      "properties": {
+       "basliklar": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "satirlar": {
+        "type": "array",
+        "items": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        }
+       }
+      },
+      "required": [
+       "basliklar",
+       "satirlar"
+      ]
+     }
+    },
+    "required": [
+     "baslik"
+    ]
+   }
+  }
+ },
+ "required": [
+  "tur",
+  "meta",
+  "root_causes",
+  "options",
+  "recommendation"
+ ],
+ "additionalProperties": false,
+ "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

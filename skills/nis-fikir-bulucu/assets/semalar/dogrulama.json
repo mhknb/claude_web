@@ -1,0 +1,1067 @@
+{
+ "type": "object",
+ "properties": {
+  "tur": {
+   "type": "string",
+   "const": "dogrulama"
+  },
+  "meta": {
+   "type": "object",
+   "description": "Rapor bilgileri",
+   "properties": {
+    "baslik": {
+     "type": "string"
+    },
+    "tarih": {
+     "type": "string",
+     "description": "YYYY-AA-GG"
+    },
+    "pazar": {
+     "type": "string",
+     "enum": [
+      "Türkiye",
+      "Global",
+      "İkisi"
+     ]
+    },
+    "kullanilan_kaynaklar": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Bu analizde gerçekten kullanılan veri kaynakları/araçlar"
+    },
+    "sinirlamalar": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Ortamın yapamadığı ve bu yüzden eksik kalanlar"
+    }
+   },
+   "required": [
+    "baslik",
+    "tarih"
+   ]
+  },
+  "summary": {
+   "type": "object",
+   "properties": {
+    "idea_name": {
+     "type": "string",
+     "description": "Ürünün çalışma adı"
+    },
+    "one_liner": {
+     "type": "string",
+     "description": "Tek cümlelik tanım"
+    },
+    "verdict_reason": {
+     "type": "string",
+     "description": "Kararın 3-4 cümlelik gerekçesi"
+    },
+    "biggest_risk": {
+     "type": "string",
+     "description": "En büyük tek risk"
+    },
+    "next_action": {
+     "type": "string",
+     "description": "Bir sonraki somut adım"
+    }
+   },
+   "required": [
+    "idea_name",
+    "one_liner",
+    "verdict_reason",
+    "biggest_risk",
+    "next_action"
+   ],
+   "additionalProperties": false
+  },
+  "scores": {
+   "type": "object",
+   "description": "Her bileşen 0-10. Yüksek puan her zaman iyi demektir.",
+   "properties": {
+    "pain": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "Problemin acısı ve sıklığı: 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    },
+    "willingness_to_pay": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "Para verme isteği (kanıtlı): 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    },
+    "market_room": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "Pazarda yer var mı (doygun değil): 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    },
+    "reachability": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "Kitleye ucuza ulaşılabilir mi: 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    },
+    "giant_safety": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "Devlerden ve yapay zeka şirketlerinden güvenli mi: 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    },
+    "buildability": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "1-2 kişi + yapay zeka ile yapılabilir mi: 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    },
+    "founder_fit": {
+     "type": "object",
+     "properties": {
+      "score": {
+       "type": "integer",
+       "description": "Kurucu profiline uygun mu: 0-10 arası tam sayı"
+      },
+      "reason": {
+       "type": "string",
+       "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
+      }
+     },
+     "required": [
+      "score",
+      "reason"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "pain",
+    "willingness_to_pay",
+    "market_room",
+    "reachability",
+    "giant_safety",
+    "buildability",
+    "founder_fit"
+   ],
+   "additionalProperties": false
+  },
+  "problem_validation": {
+   "type": "object",
+   "properties": {
+    "problem": {
+     "type": "string",
+     "description": "Problem tanımı"
+    },
+    "frequency": {
+     "type": "string",
+     "enum": [
+      "düşük",
+      "orta",
+      "yüksek"
+     ],
+     "description": "Problem ne sık yaşanıyor"
+    },
+    "intensity": {
+     "type": "string",
+     "enum": [
+      "düşük",
+      "orta",
+      "yüksek"
+     ],
+     "description": "Ne kadar acı veriyor"
+    },
+    "current_workarounds": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "İnsanlar bugün nasıl idare ediyor"
+    },
+    "user_quotes": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "quote": {
+        "type": "string",
+        "description": "Kullanıcının kendi sözü (forum, yorum)"
+       },
+       "url": {
+        "type": "string",
+        "description": "Kaynak"
+       }
+      },
+      "required": [
+       "quote",
+       "url"
+      ],
+      "additionalProperties": false
+     },
+     "description": "Gerçek kullanıcı ifadeleri"
+    }
+   },
+   "required": [
+    "problem",
+    "frequency",
+    "intensity",
+    "current_workarounds",
+    "user_quotes"
+   ],
+   "additionalProperties": false
+  },
+  "audience": {
+   "type": "object",
+   "properties": {
+    "segments": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "description": "Segment adı"
+       },
+       "description": {
+        "type": "string",
+        "description": "Kim bunlar"
+       },
+       "size_estimate": {
+        "type": "string",
+        "description": "Büyüklük tahmini ve nasıl hesaplandığı"
+       },
+       "willingness_to_pay": {
+        "type": "string",
+        "enum": [
+         "düşük",
+         "orta",
+         "yüksek"
+        ],
+        "description": "Ödeme isteği"
+       },
+       "wtp_evidence": {
+        "type": "string",
+        "description": "Ödeme isteğinin kanıtı"
+       },
+       "expectations": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Üründen beklentileri"
+       },
+       "pains": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Acı noktaları"
+       },
+       "platforms": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string",
+           "description": "Platform/topluluk adı (ör. r/xyz, Facebook grubu, LinkedIn, TikTok)"
+          },
+          "url": {
+           "type": "string",
+           "description": "Link, biliniyorsa"
+          },
+          "note": {
+           "type": "string",
+           "description": "Orada ne konuşuluyor"
+          }
+         },
+         "required": [
+          "name",
+          "url",
+          "note"
+         ],
+         "additionalProperties": false
+        },
+        "description": "Sık kullandıkları platformlar"
+       },
+       "validated": {
+        "type": "boolean",
+        "description": "Bu segment gerçek veriyle doğrulandı mı"
+       },
+       "evidence": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "claim": {
+           "type": "string",
+           "description": "Kanıtlanan iddia, kısa"
+          },
+          "url": {
+           "type": "string",
+           "description": "Kaynak linki. Kaynak yoksa boş bırakma, iddiayı hiç yazma."
+          }
+         },
+         "required": [
+          "claim",
+          "url"
+         ],
+         "additionalProperties": false
+        },
+        "description": "Kanıtlar"
+       }
+      },
+      "required": [
+       "name",
+       "description",
+       "size_estimate",
+       "willingness_to_pay",
+       "wtp_evidence",
+       "expectations",
+       "pains",
+       "platforms",
+       "validated",
+       "evidence"
+      ],
+      "additionalProperties": false
+     },
+     "description": "Hedef kitle segmentleri, en iyi uyan önce"
+    },
+    "excluded_segments": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "reason": {
+        "type": "string",
+        "description": "Neden hedeflenmemeli"
+       }
+      },
+      "required": [
+       "name",
+       "reason"
+      ],
+      "additionalProperties": false
+     },
+     "description": "Hedeflenmemesi gereken kitleler"
+    }
+   },
+   "required": [
+    "segments",
+    "excluded_segments"
+   ],
+   "additionalProperties": false
+  },
+  "competitors": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Rakip adı"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "doğrudan",
+       "dolaylı",
+       "manuel yöntem"
+      ],
+      "description": "Rakip türü"
+     },
+     "platform": {
+      "type": "string",
+      "description": "iOS, Android, web vb."
+     },
+     "url": {
+      "type": "string",
+      "description": "Link"
+     },
+     "pricing": {
+      "type": "string",
+      "description": "Fiyatlandırma"
+     },
+     "traction": {
+      "type": "string",
+      "description": "Puan, yorum sayısı, indirme vb. ölçülen veri"
+     },
+     "strengths": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Güçlü yanlar"
+     },
+     "weaknesses": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Zayıf yanlar, kullanıcı şikâyetlerinden"
+     },
+     "is_giant": {
+      "type": "boolean",
+      "description": "Büyük şirket mi"
+     }
+    },
+    "required": [
+     "name",
+     "kind",
+     "platform",
+     "url",
+     "pricing",
+     "traction",
+     "strengths",
+     "weaknesses",
+     "is_giant"
+    ],
+    "additionalProperties": false
+   },
+   "description": "Rakipler"
+  },
+  "market_position": {
+   "type": "object",
+   "properties": {
+    "saturation": {
+     "type": "string",
+     "enum": [
+      "düşük",
+      "orta",
+      "yüksek"
+     ],
+     "description": "Pazar doygunluğu"
+    },
+    "giants_present": {
+     "type": "string",
+     "description": "Devler bu alanda mı, ne yapıyorlar"
+    },
+    "trend": {
+     "type": "string",
+     "description": "İlgi artıyor mu azalıyor mu, trend verisiyle"
+    },
+    "gap": {
+     "type": "string",
+     "description": "Pazardaki boşluk"
+    },
+    "why_now": {
+     "type": "string",
+     "description": "Neden şimdi"
+    }
+   },
+   "required": [
+    "saturation",
+    "giants_present",
+    "trend",
+    "gap",
+    "why_now"
+   ],
+   "additionalProperties": false
+  },
+  "positioning": {
+   "type": "object",
+   "properties": {
+    "statement": {
+     "type": "string",
+     "description": "Konumlandırma cümlesi: [kitle] için, [alternatif]ten farklı olarak, [değer] sağlayan [kategori]"
+    },
+    "category": {
+     "type": "string",
+     "description": "Pazar kategorisi"
+    },
+    "competitive_alternatives": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Müşteri bizi kullanmazsa ne kullanır"
+    },
+    "unique_attributes": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Sadece bizde olanlar"
+    },
+    "value": {
+     "type": "string",
+     "description": "Bu özelliklerin müşteriye sağladığı değer"
+    },
+    "best_fit_customer": {
+     "type": "string",
+     "description": "En iyi uyan müşteri"
+    },
+    "tagline": {
+     "type": "string",
+     "description": "Kısa slogan"
+    }
+   },
+   "required": [
+    "statement",
+    "category",
+    "competitive_alternatives",
+    "unique_attributes",
+    "value",
+    "best_fit_customer",
+    "tagline"
+   ],
+   "additionalProperties": false
+  },
+  "keywords": {
+   "type": "object",
+   "properties": {
+    "app_name_ideas": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Mağaza başlığı önerileri (anahtar kelime içeren)"
+    },
+    "app_subtitle": {
+     "type": "string",
+     "description": "Mağaza alt başlığı önerisi"
+    },
+    "aso": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "keyword": {
+        "type": "string"
+       },
+       "language": {
+        "type": "string",
+        "enum": [
+         "tr",
+         "en"
+        ]
+       },
+       "competition": {
+        "type": "string",
+        "enum": [
+         "düşük",
+         "orta",
+         "yüksek"
+        ],
+        "description": "Bu kelimede kaç güçlü uygulama var"
+       },
+       "relevance": {
+        "type": "string",
+        "enum": [
+         "düşük",
+         "orta",
+         "yüksek"
+        ]
+       },
+       "source": {
+        "type": "string",
+        "description": "Nereden bulundu: öneri listesi, rakip başlığı vb."
+       }
+      },
+      "required": [
+       "keyword",
+       "language",
+       "competition",
+       "relevance",
+       "source"
+      ],
+      "additionalProperties": false
+     },
+     "description": "ASO anahtar kelimeleri"
+    },
+    "seo": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "keyword": {
+        "type": "string"
+       },
+       "language": {
+        "type": "string",
+        "enum": [
+         "tr",
+         "en"
+        ]
+       },
+       "intent": {
+        "type": "string",
+        "enum": [
+         "bilgi",
+         "karşılaştırma",
+         "satın alma"
+        ],
+        "description": "Arama niyeti"
+       },
+       "competition": {
+        "type": "string",
+        "enum": [
+         "düşük",
+         "orta",
+         "yüksek"
+        ]
+       },
+       "content_idea": {
+        "type": "string",
+        "description": "Bu kelime için içerik/sayfa fikri"
+       }
+      },
+      "required": [
+       "keyword",
+       "language",
+       "intent",
+       "competition",
+       "content_idea"
+      ],
+      "additionalProperties": false
+     },
+     "description": "SEO anahtar kelimeleri"
+    }
+   },
+   "required": [
+    "app_name_ideas",
+    "app_subtitle",
+    "aso",
+    "seo"
+   ],
+   "additionalProperties": false
+  },
+  "business": {
+   "type": "object",
+   "properties": {
+    "pricing_model": {
+     "type": "string",
+     "description": "Abonelik, tek seferlik, kullanım başı vb. ve neden"
+    },
+    "suggested_price": {
+     "type": "string",
+     "description": "Önerilen fiyat ve rakip fiyatlarıyla karşılaştırma"
+    },
+    "cost_per_user_month": {
+     "type": "string",
+     "description": "Kullanıcı başına aylık tahmini maliyet (yapay zeka, sunucu)"
+    },
+    "gross_margin": {
+     "type": "string",
+     "description": "Tahmini brüt kâr marjı"
+    },
+    "customers_for_target": {
+     "type": "string",
+     "description": "Kurucunun aylık gelir hedefine kaç ödeyen müşteriyle ulaşılır"
+    },
+    "acquisition_cost": {
+     "type": "string",
+     "description": "Müşteri edinme maliyeti tahmini ve kanal"
+    }
+   },
+   "required": [
+    "pricing_model",
+    "suggested_price",
+    "cost_per_user_month",
+    "gross_margin",
+    "customers_for_target",
+    "acquisition_cost"
+   ],
+   "additionalProperties": false
+  },
+  "mvp": {
+   "type": "object",
+   "properties": {
+    "core_features": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "İlk sürümde mutlaka olması gerekenler"
+    },
+    "not_now": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Şimdilik yapılmayacaklar"
+    },
+    "tech_suggestion": {
+     "type": "string",
+     "description": "Teknoloji önerisi"
+    },
+    "build_weeks": {
+     "type": "string",
+     "description": "1-2 kişi + yapay zeka ile tahmini süre"
+    }
+   },
+   "required": [
+    "core_features",
+    "not_now",
+    "tech_suggestion",
+    "build_weeks"
+   ],
+   "additionalProperties": false
+  },
+  "risks": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string",
+      "enum": [
+       "yasal",
+       "platform",
+       "dev şirketler",
+       "teknik",
+       "pazar",
+       "diğer"
+      ]
+     },
+     "description": {
+      "type": "string"
+     },
+     "severity": {
+      "type": "string",
+      "enum": [
+       "düşük",
+       "orta",
+       "yüksek"
+      ]
+     },
+     "mitigation": {
+      "type": "string",
+      "description": "Nasıl azaltılır"
+     }
+    },
+    "required": [
+     "type",
+     "description",
+     "severity",
+     "mitigation"
+    ],
+    "additionalProperties": false
+   },
+   "description": "Riskler"
+  },
+  "legal_risk": {
+   "type": "string",
+   "enum": [
+    "düşük",
+    "orta",
+    "yüksek"
+   ],
+   "description": "Genel yasal risk seviyesi (KVKK/GDPR, sağlık, finans, mağaza kuralları)"
+  },
+  "validation_plan": {
+   "type": "object",
+   "properties": {
+    "riskiest_assumption": {
+     "type": "string",
+     "description": "Fikri en çok öldürebilecek varsayım"
+    },
+    "experiment": {
+     "type": "object",
+     "properties": {
+      "method": {
+       "type": "string",
+       "description": "Yöntem (tanıtım sayfası, ön satış, el ile hizmet vb.)"
+      },
+      "steps": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       },
+       "description": "Adımlar"
+      },
+      "budget": {
+       "type": "string",
+       "description": "Bütçe"
+      },
+      "duration": {
+       "type": "string",
+       "description": "Süre"
+      },
+      "success_criteria": {
+       "type": "string",
+       "description": "Başarı ölçütü, sayısal"
+      }
+     },
+     "required": [
+      "method",
+      "steps",
+      "budget",
+      "duration",
+      "success_criteria"
+     ],
+     "additionalProperties": false
+    },
+    "first_100_users": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "channel": {
+        "type": "string",
+        "description": "Kanal"
+       },
+       "tactic": {
+        "type": "string",
+        "description": "Somut taktik"
+       }
+      },
+      "required": [
+       "channel",
+       "tactic"
+      ],
+      "additionalProperties": false
+     },
+     "description": "İlk 100 kullanıcıya ulaşma yolları"
+    },
+    "kill_criteria": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "\"Şu olursa bırak\" ölçütleri, sayısal ve tarihli"
+    }
+   },
+   "required": [
+    "riskiest_assumption",
+    "experiment",
+    "first_100_users",
+    "kill_criteria"
+   ],
+   "additionalProperties": false
+  },
+  "pivot_hints": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "Puan düşükse hangi değişken değiştirilebilir"
+  },
+  "data_gaps": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "Doğrulanamayan veya veri bulunamayan konular"
+  },
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "title": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "title",
+     "url"
+    ],
+    "additionalProperties": false
+   },
+   "description": "Kullanılan başlıca kaynaklar"
+  },
+  "ek_grafikler": {
+   "type": "array",
+   "description": "İsteğe bağlı ek grafikler (Chart.js). Sadece gerçek veriyle.",
+   "items": {
+    "type": "object",
+    "properties": {
+     "baslik": {
+      "type": "string"
+     },
+     "tur": {
+      "type": "string",
+      "enum": [
+       "bar",
+       "line",
+       "pie",
+       "doughnut",
+       "radar",
+       "scatter"
+      ]
+     },
+     "etiketler": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "seriler": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "ad": {
+         "type": "string"
+        },
+        "veri": {
+         "type": "array"
+        }
+       },
+       "required": [
+        "ad",
+        "veri"
+       ]
+      }
+     },
+     "aciklama": {
+      "type": "string",
+      "description": "Grafiğin ne gösterdiği ve verinin kaynağı"
+     },
+     "kaynak_url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "baslik",
+     "tur",
+     "seriler"
+    ]
+   }
+  },
+  "ek_bolumler": {
+   "type": "array",
+   "description": "İsteğe bağlı ek bölümler (düz metin/markdown benzeri; HTML kabul edilmez)",
+   "items": {
+    "type": "object",
+    "properties": {
+     "baslik": {
+      "type": "string"
+     },
+     "metin": {
+      "type": "string"
+     },
+     "tablo": {
+      "type": "object",
+      "properties": {
+       "basliklar": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "satirlar": {
+        "type": "array",
+        "items": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        }
+       }
+      },
+      "required": [
+       "basliklar",
+       "satirlar"
+      ]
+     }
+    },
+    "required": [
+     "baslik"
+    ]
+   }
+  }
+ },
+ "required": [
+  "tur",
+  "meta",
+  "summary",
+  "scores",
+  "problem_validation",
+  "audience",
+  "competitors",
+  "market_position",
+  "positioning",
+  "keywords",
+  "business",
+  "mvp",
+  "risks",
+  "legal_risk",
+  "validation_plan",
+  "pivot_hints",
+  "data_gaps",
+  "sources"
+ ],
+ "additionalProperties": false,
+ "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
