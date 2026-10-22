@@ -93,7 +93,7 @@
           </label>
           <div class="model-slot"></div>
         </div>
-        <div class="actions"><button class="primary" type="submit">Nişleri ara</button><span class="muted">Yaklaşık 10-20 dakika sürer.</span></div>
+        <div class="actions"><button class="primary" type="submit">Nişleri ara</button><span class="muted">Yaklaşık 15-30 dakika sürer.</span></div>
         <p class="error" hidden></p>
       </form>
     </section>
@@ -108,7 +108,7 @@
           <textarea name="idea" rows="5" required placeholder="ör. Diyetisyenler için danışanlarının yemek fotoğraflarını yapay zekayla analiz edip haftalık rapor çıkaran mobil uygulama."></textarea>
         </label>
         <div class="row"><div class="model-slot"></div></div>
-        <div class="actions"><button class="primary" type="submit">Doğrula</button><span class="muted">Yaklaşık 10-20 dakika sürer.</span></div>
+        <div class="actions"><button class="primary" type="submit">Doğrula</button><span class="muted">Yaklaşık 15-30 dakika sürer.</span></div>
         <p class="error" hidden></p>
       </form>
     </section>
@@ -116,16 +116,16 @@
 
   <template id="tpl-model">
     <label>Model
-      <select name="model"></select>
+      <input name="model" list="model-list" autocomplete="off">
     </label>
     <label>Araştırma derinliği
-      <select name="effort">
-        <option value="medium">Normal (daha ucuz)</option>
-        <option value="high" selected>Derin (önerilen)</option>
-        <option value="xhigh">Çok derin (daha pahalı)</option>
+      <select name="depth">
+        <option value="deep" selected>Derin: model düşünerek çalışır (önerilen)</option>
+        <option value="normal">Normal: daha hızlı</option>
       </select>
     </label>
   </template>
+  <datalist id="model-list"></datalist>
 
   <script src="app.js" type="module"></script>
 </body>

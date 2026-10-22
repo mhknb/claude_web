@@ -20,7 +20,8 @@ const hostOf = (u) => {
 };
 const list = (items) => (items?.length ? `<ul>${items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>` : '<p class="muted">Veri yok</p>');
 const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' }) : '');
-const usd = (n) => `$${(n ?? 0).toFixed(2)}`;
+const fmtNum = (n) => (n ?? 0).toLocaleString('tr-TR');
+const usageText = (u) => (u ? `${fmtNum(u.requests)} istek · ${fmtNum((u.input || 0) + (u.output || 0))} token` : '');
 // highIsGood: "yüksek" iyi bir şey mi (ödeme isteği) yoksa kötü mü (rekabet, risk)?
 const levelTag = (v, highIsGood = false) => {
   const tone = v === 'orta' ? 'mid' : (v === 'yüksek') === highIsGood ? 'good' : 'bad';
@@ -52,10 +53,14 @@ async function loadStatus() {
   const s = status.sources;
   const chip = (ok, label, hint) => `<span class="chip ${ok ? 'ok' : 'off'}" title="${esc(hint)}">${ok ? '●' : '○'} ${label}</span>`;
   document.getElementById('sources').innerHTML =
-    chip(s.anthropic, 'Claude', s.anthropic ? 'API anahtarı tanımlı' : '.env dosyasına ANTHROPIC_API_KEY ekleyin') +
+    chip(s.llm, 'Yapay zeka (NVIDIA NIM)', s.llm ? 'API anahtarı tanımlı' : '.env dosyasına NVIDIA_API_KEY ekleyin') +
     chip(s.rivalsearch, 'Topluluk araması', 'RivalSearchMCP: Reddit, Hacker News, Product Hunt, haberler') +
     chip(s.trends, 'Trend verisi', s.trends ? 'Trends MCP açık' : 'Ücretsiz anahtar için .env dosyasına TRENDSMCP_API_KEY ekleyin') +
     chip(true, 'Mağaza verisi', 'App Store, Google Play ve Google önerileri (ücretsiz)');
+  const rec = Object.entries(status.recommended);
+  const others = status.available.filter((id) => !status.recommended[id]);
+  document.getElementById('model-list').innerHTML =
+    rec.map(([id, label]) => `<option value="${esc(id)}">${esc(label)}</option>`).join('') + others.map((id) => `<option value="${esc(id)}"></option>`).join('');
 }
 
 // ---------- sayfalar ----------
@@ -69,11 +74,7 @@ function mountTemplate(id) {
   app.querySelectorAll('.model-slot').forEach((slot) => {
     slot.replaceWith(document.getElementById('tpl-model').content.cloneNode(true));
   });
-  app.querySelectorAll('select[name=model]').forEach((sel) => {
-    sel.innerHTML = Object.entries(status.models)
-      .map(([id, label]) => `<option value="${esc(id)}" ${id === status.defaultModel ? 'selected' : ''}>${esc(label)}</option>`)
-      .join('');
-  });
+  app.querySelectorAll('input[name=model]').forEach((el) => (el.value = status.defaultModel));
 }
 
 async function profilePage() {
@@ -130,7 +131,7 @@ async function discoverPage() {
   form.onsubmit = (e) => {
     e.preventDefault();
     const fd = Object.fromEntries(new FormData(form));
-    startJob({ type: 'discover', model: fd.model, effort: fd.effort, input: { theme: fd.theme, notes: fd.notes, count: Number(fd.count) } }, form);
+    startJob({ type: 'discover', model: fd.model, depth: fd.depth, input: { theme: fd.theme, notes: fd.notes, count: Number(fd.count) } }, form);
   };
 }
 
@@ -142,7 +143,7 @@ async function validatePage() {
   form.onsubmit = (e) => {
     e.preventDefault();
     const fd = Object.fromEntries(new FormData(form));
-    startJob({ type: 'validate', model: fd.model, effort: fd.effort, input: { idea: fd.idea } }, form);
+    startJob({ type: 'validate', model: fd.model, depth: fd.depth, input: { idea: fd.idea } }, form);
   };
 }
 
@@ -155,7 +156,7 @@ async function historyPage() {
   app.innerHTML = `<section class="card"><h1>Geçmiş analizler</h1>
     ${
       jobs.length
-        ? `<table class="table"><thead><tr><th>Analiz</th><th>Tür</th><th>Durum</th><th>Puan</th><th>Maliyet</th><th>Tarih</th><th></th></tr></thead><tbody>
+        ? `<table class="table"><thead><tr><th>Analiz</th><th>Tür</th><th>Durum</th><th>Puan</th><th>Kullanım</th><th>Tarih</th><th></th></tr></thead><tbody>
       ${jobs
         .map(
           (j) => `<tr>
@@ -163,7 +164,7 @@ async function historyPage() {
         <td>${esc(TYPE_LABEL[j.type])}</td>
         <td><span class="status s-${esc(j.status)}">${esc(STATUS_LABEL[j.status])}</span></td>
         <td>${j.score != null ? `${Math.round(j.score)} · ${esc(j.verdict)}` : ''}</td>
-        <td>${usd(j.cost)}</td>
+        <td>${fmtNum(j.tokens)} token</td>
         <td>${fmtDate(j.createdAt)}</td>
         <td><button class="link danger" data-del="${esc(j.id)}">Sil</button></td></tr>`,
         )
@@ -205,7 +206,8 @@ function renderJob(job) {
       <div class="job-meta">
         <span class="status s-${esc(job.status)}">${esc(STATUS_LABEL[job.status])}${job.status === 'running' ? ` · ${esc(job.phase)}` : ''}</span>
         <span>${elapsed} dk</span>
-        <span title="Tahmini Claude API maliyeti">${usd(job.usage?.costUsd)}</span>
+        <span title="Yapay zeka kullanımı">${usageText(job.usage)}</span>
+        <span class="muted">${esc(job.model)}</span>
       </div>
     </div>
     ${job.error ? `<p class="error">${esc(job.error)}</p>` : ''}
@@ -239,17 +241,17 @@ function renderJob(job) {
   on('dl-json', () => download(`${job.id}.json`, JSON.stringify(job.result, null, 2), 'application/json'));
   on('dl-md', () => download(`${job.id}.md`, toMarkdown(job), 'text/markdown'));
   on('print', () => window.print());
-  on('retry', () => startJob({ type: job.type, model: job.model, effort: job.effort, input: job.type === 'pivot' ? { sourceJobId: job.parentId, notes: job.input.notes } : job.input }));
+  on('retry', () => startJob({ type: job.type, model: job.model, depth: job.depth, input: job.type === 'pivot' ? { sourceJobId: job.parentId, notes: job.input.notes } : job.input }));
 
   app.querySelectorAll('[data-validate]').forEach((b) => {
     b.onclick = () => {
       const src = JSON.parse(b.dataset.validate);
-      startJob({ type: 'validate', model: job.model, effort: job.effort, input: { ...src, sourceJobId: job.id } });
+      startJob({ type: 'validate', model: job.model, depth: job.depth, input: { ...src, sourceJobId: job.id } });
     };
   });
   on('pivot', () => {
     const notes = prompt('Pivot için bir notunuz var mı? (isteğe bağlı, ör. "B2B yönüne kaydırmayı dene")') ?? '';
-    startJob({ type: 'pivot', model: job.model, effort: job.effort, input: { sourceJobId: job.id, notes } });
+    startJob({ type: 'pivot', model: job.model, depth: job.depth, input: { sourceJobId: job.id, notes } });
   });
 }
 

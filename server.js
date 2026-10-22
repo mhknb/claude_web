@@ -12,7 +12,7 @@ try {
 const express = (await import('express')).default;
 const { startJob, cancelJob } = await import('./lib/jobs.js');
 const { readProfile, saveProfile, readJob, listJobs, deleteJob, markInterrupted } = await import('./lib/store.js');
-const { sourceStatus, MODELS } = await import('./lib/agent.js');
+const { apiKey, listModels, RECOMMENDED_MODELS, DEFAULT_MODEL, BASE_URL } = await import('./lib/llm.js');
 const { COMPONENTS } = await import('./lib/scoring.js');
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -22,11 +22,20 @@ app.use(express.static(path.join(here, 'public')));
 
 markInterrupted();
 
-app.get('/api/status', (req, res) => {
+const sourceStatus = () => ({
+  llm: Boolean(apiKey()),
+  rivalsearch: process.env.RIVALSEARCH_ENABLED !== 'false',
+  trends: Boolean(process.env.TRENDSMCP_API_KEY),
+});
+
+let modelCache = null;
+app.get('/api/status', async (req, res) => {
+  if (!modelCache && apiKey()) modelCache = await listModels();
   res.json({
     sources: sourceStatus(),
-    models: Object.fromEntries(Object.entries(MODELS).map(([id, m]) => [id, m.label])),
-    defaultModel: process.env.MODEL || 'claude-opus-5-5',
+    recommended: RECOMMENDED_MODELS,
+    available: modelCache || [],
+    defaultModel: DEFAULT_MODEL,
     components: COMPONENTS,
   });
 });
@@ -63,7 +72,8 @@ const port = Number(process.env.PORT) || 3000;
 app.listen(port, '127.0.0.1', () => {
   const s = sourceStatus();
   console.log(`\nNiş Fikir Bulucu çalışıyor: http://localhost:${port}\n`);
-  if (!s.anthropic) console.log('UYARI: ANTHROPIC_API_KEY yok. .env dosyasını oluşturun (README\'ye bakın).');
+  if (!s.llm) console.log('UYARI: NVIDIA_API_KEY yok. .env dosyasını oluşturun (README\'ye bakın).');
+  console.log(`Yapay zeka: ${BASE_URL} · varsayılan model: ${DEFAULT_MODEL}`);
   console.log(`Trend verisi (Trends MCP): ${s.trends ? 'açık' : 'kapalı (TRENDSMCP_API_KEY yok)'}`);
   console.log(`Topluluk araması (RivalSearchMCP): ${s.rivalsearch ? 'açık' : 'kapalı'}\n`);
 });

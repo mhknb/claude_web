@@ -22,10 +22,11 @@ Gerçek verilere bakarak küçük bir ekibin (1-2 kişi + yapay zeka) yapıp sat
 
 | Kaynak | Ne için | Ücret |
 |---|---|---|
-| Claude web araması ve sayfa okuma | Genel araştırma | Claude API ücretine dahil (arama başına yaklaşık 1 sent) |
+| [NVIDIA NIM](https://build.nvidia.com) | Yapay zeka modeli (varsayılan GLM 5.2) | Ücretsiz, dakikada yaklaşık 40 istek sınırı |
+| Sayfa okuma (uygulamanın kendisi) | Bulunan sayfaların içeriğini okuma | Ücretsiz |
 | App Store ve Google Play | Rakipler, puanlar, indirme sayıları, 1-3 yıldızlı yorumlar | Ücretsiz |
 | Google ve Google Play otomatik tamamlama | İnsanların gerçekten aradığı kelimeler (SEO/ASO) | Ücretsiz |
-| [RivalSearchMCP](https://github.com/damionrashford/RivalSearchMCP) | Reddit, Hacker News, Product Hunt, haberler | Ücretsiz |
+| [RivalSearchMCP](https://github.com/damionrashford/RivalSearchMCP) | Web araması, Reddit, Hacker News, Product Hunt, haberler | Ücretsiz |
 | [Trends MCP](https://github.com/trendsmcp-ai/Trends-MCP) | Google, TikTok, YouTube, Amazon trendleri | Ayda 100 sorgu ücretsiz (isteğe bağlı) |
 
 Yöntem şu açık kaynak projelerden derlendi: [idea-validation-agents](https://github.com/MaxKmet/idea-validation-agents), [business-idea-validator](https://github.com/allexp1/business-idea-validator-AI-skill), [startup-skill](https://github.com/ferdinandobons/startup-skill), [productskills](https://github.com/assimovt/productskills), [pm-skills](https://github.com/phuryn/pm-skills).
@@ -45,7 +46,7 @@ Yöntem şu açık kaynak projelerden derlendi: [idea-validation-agents](https:/
    cp .env.example .env
    open -e .env
    ```
-   Açılan dosyada `ANTHROPIC_API_KEY=` satırına Claude API anahtarınızı yapıştırın. Anahtarı [platform.claude.com](https://platform.claude.com) adresinde, **API Keys** bölümünden alabilirsiniz; hesabınıza kredi yüklemeniz gerekir.
+   Açılan dosyada `NVIDIA_API_KEY=` satırına NVIDIA anahtarınızı yapıştırın. Anahtarı ücretsiz olarak [build.nvidia.com](https://build.nvidia.com) adresinden alabilirsiniz: giriş yapın, sağ üstteki profilden **API Keys** bölümüne gidin. Anahtar `nvapi-` ile başlar.
 
    Trend verisi istiyorsanız [trendsmcp.ai](https://www.trendsmcp.ai/account) adresinden ücretsiz anahtar alıp `TRENDSMCP_API_KEY=` satırına yapıştırın. Dosyayı kaydedin.
 
@@ -58,20 +59,20 @@ npm start
 
 Sonra tarayıcıda **http://localhost:3000** adresini açın. Kapatmak için Terminal'de `Ctrl + C` tuşlarına basın.
 
-- Bir analiz 10-20 dakika sürer. Sayfayı kapatsanız bile analiz devam eder, sonra **Geçmiş** sekmesinden açabilirsiniz. Terminal açık kalmalı ve Mac uykuya geçmemeli.
+- Bir analiz 15-30 dakika sürer. Sayfayı kapatsanız bile analiz devam eder, sonra **Geçmiş** sekmesinden açabilirsiniz. Terminal açık kalmalı ve Mac uykuya geçmemeli.
 - Sayfanın üstündeki işaretler hangi veri kaynaklarının açık olduğunu gösterir.
 
-## Maliyet
+## Model seçimi ve hız
 
-Claude API ücreti analiz başına tahminen **1-5 $** tutar. Her analizin tahmini maliyeti sayfada gösterilir. Daha ucuz çalıştırmak için:
-- Model olarak **Claude Sonnet 5.5** seçin (yaklaşık yarı fiyatına).
-- Araştırma derinliğini **Normal** yapın.
-
-Diğer veri kaynakları ücretsizdir.
+- Varsayılan model **GLM 5.2**. Sayfadaki "Model" kutusundan GLM 5.3 Flash, DeepSeek V4 ya da NVIDIA hesabınızda açık olan başka bir model seçilebilir. Seçilen modelin araç kullanabilmesi (tool calling) gerekir.
+- NVIDIA'nın ücretsiz katmanında dakikada yaklaşık 40 istek sınırı var. Uygulama istekleri buna göre aralıklı gönderir. Bu yüzden bir analiz 15-30 dakika sürebilir.
+- NVIDIA sunucuları yoğunken yanıtlar gecikebilir. Analiz hata verirse "Yeniden başlat" butonunu kullanın ya da daha hızlı bir model (GLM 5.3 Flash) seçin.
+- "Araştırma derinliği: Derin" seçeneğinde model düşünerek çalışır. Daha iyi sonuç verir ama daha yavaştır.
 
 ## Bilmeniz gerekenler
 
 - Bu araç karar vermenize yardım eder, kararı sizin yerinize vermez. Raporlardaki her önemli bilginin yanında kaynak linki vardır; önemli kararlardan önce linkleri kontrol edin. Doğrulanamayan konular raporun "Doğrulanamayanlar" bölümünde listelenir.
+- Model raporu yanlış biçimde verirse uygulama düzeltmesini ister. Yine de eksik kalan alanlar "Veri bulunamadı" olarak gösterilir ve adımlar listesinde belirtilir.
 - Puanı yapay zeka değil kod hesaplar: yapay zeka 7 bileşene 0-10 arası puan verir, toplam puan ve karar ağırlıklı ortalamayla bulunur. Para verme isteği, problemin acısı veya yapılabilirlik çok düşükse ya da yasal risk yüksekse puan otomatik olarak sınırlanır.
 - Uygulama yalnızca sizin bilgisayarınızdan erişilebilir (`127.0.0.1`). Ağdaki başka cihazlar açamaz.
 - Bazı mağaza verileri (Google Play gibi) resmi olmayan yollarla okunur. Bir kaynak çalışmazsa analiz o kaynak olmadan devam eder ve durum adımlar listesinde görünür.
