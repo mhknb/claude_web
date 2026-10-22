@@ -4,6 +4,20 @@ Her sinyal türü için kullanılabilen **en güçlü** kaynağı seç. Bir kayn
 
 `<skill>`, bu skill'in klasörüdür (SKILL.md'nin bulunduğu yer). Komutları bu yolla çalıştır.
 
+## 0. Komutlar ağ hatası verirse
+
+`scripts/veri.py` komutları "403", "Tunnel connection failed" veya "timed out" gibi bir hata verirse, bulunduğun ortam bu sitelere doğrudan erişimi engelliyor olabilir. Bu durum sık görülür, özellikle bulut ortamlarında. Bu durumda bir **sayfa okuma aracın** varsa (Firecrawl, web_fetch, kendi web okuma aracın), aynı ücretsiz adresleri onunla oku; bu araçlar sayfayı kendi sunucularından alır:
+
+| Veri | Adres |
+|---|---|
+| App Store araması | `https://itunes.apple.com/search?term=<kelime>&country=tr&entity=software&limit=15` |
+| App Store uygulama ayrıntısı | `https://itunes.apple.com/lookup?id=<id1>,<id2>&country=tr` |
+| App Store yorumları | `https://itunes.apple.com/tr/rss/customerreviews/page=1/id=<id>/sortby=mostrecent/json` |
+| Google önerileri | `https://suggestqueries.google.com/complete/search?client=firefox&hl=tr&gl=tr&q=<kelime>` |
+| YouTube önerileri | `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&hl=tr&gl=tr&q=<kelime>` |
+
+Dönen JSON'u kendin yorumla. Doygunluk için bölüm 2'deki kuralı uygula. Hiçbir yol çalışmazsa durumu `meta.sinirlamalar` alanına yaz.
+
 ## 1. Gerçek kullanıcı şikâyeti ve talebi (problem, acı, beklenti)
 
 En değerli sinyal: insanların **kendi cümleleriyle** anlattığı sorunlar ve "keşke ... olsa" istekleri.
