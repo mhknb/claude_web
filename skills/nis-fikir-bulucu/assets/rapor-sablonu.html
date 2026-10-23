@@ -236,6 +236,7 @@ function renderDogrulama(d) {
   const sc = (d.score = d.score || scoreIdea(d.scores, d.legal_risk));
   const s = d.summary, pv = d.problem_validation, mp = d.market_position, po = d.positioning, kw = d.keywords, b = d.business, vp = d.validation_plan;
   const toc = [['puan', 'Puan'], ['problem', 'Problem'], ['kitle', 'Hedef kitle'], ['rakipler', 'Rakipler'], ['pazar', 'Pazar konumu'], ['konum', 'Konumlandırma'], ['kelimeler', 'ASO / SEO'], ['gelir', 'Gelir'], ['mvp', 'MVP'], ['riskler', 'Riskler'], ['plan', 'Test planı'], ['kaynaklar', 'Kaynaklar']];
+  if (d.unit_economics) toc.splice(toc.findIndex((t) => t[0] === 'gelir') + 1, 0, ['birim', 'Birim ekonomisi']);
   const kwTable = (rows, cols) => (rows?.length ? `<div class="table-wrap"><table><thead><tr>${cols.map((c) => `<th>${c[1]}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${cols.map(([k]) => `<td>${k === 'competition' ? tag(r[k]) : k === 'relevance' ? tag(r[k], true) : esc(r[k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : '<p class="muted">Veri yok</p>');
   const lvl = { 'düşük': 1, 'orta': 2, 'yüksek': 3 };
   const c = COLORS();
@@ -265,11 +266,12 @@ function renderDogrulama(d) {
   ${card('pazar', 'Pazardaki konum', facts([['Doygunluk', tag(mp.saturation), true], ['Devler', mp.giants_present], ['Trend', mp.trend], ['Boşluk', mp.gap], ['Neden şimdi', mp.why_now]]))}
   ${card('konum', 'Konumlandırma', `<p class="statement">${esc(po.statement)}</p><p><b>Slogan:</b> ${esc(po.tagline)}</p>
     ${facts([['Kategori', po.category], ['En iyi uyan müşteri', po.best_fit_customer], ['Sağladığı değer', po.value]])}
-    <div class="cols"><div><h4>Müşterinin bugünkü alternatifleri</h4>${list(po.competitive_alternatives)}</div><div><h4>Sadece bizde olanlar</h4>${list(po.unique_attributes)}</div></div>`)}
+    <div class="cols"><div><h4>Müşterinin bugünkü alternatifleri</h4>${list(po.competitive_alternatives)}</div><div><h4>Sadece bizde olanlar</h4>${list(po.unique_attributes)}</div></div>${renderValueEq(po)}`)}
   ${card('kelimeler', 'ASO ve SEO anahtar kelimeleri', `${facts([['Mağaza adı önerileri', (kw.app_name_ideas || []).join(' · ')], ['Alt başlık', kw.app_subtitle]])}
     <h3>ASO (uygulama mağazası)</h3>${asoChart}${kwTable(kw.aso, [['keyword', 'Kelime'], ['language', 'Dil'], ['competition', 'Rekabet'], ['relevance', 'Uygunluk'], ['source', 'Kaynak']])}
     <h3>SEO (Google)</h3>${kwTable(kw.seo, [['keyword', 'Kelime'], ['language', 'Dil'], ['intent', 'Niyet'], ['competition', 'Rekabet'], ['content_idea', 'İçerik fikri']])}`)}
   ${card('gelir', 'Gelir ve maliyet', facts([['Fiyat modeli', b.pricing_model], ['Önerilen fiyat', b.suggested_price], ['Kullanıcı başı maliyet', b.cost_per_user_month], ['Brüt kâr marjı', b.gross_margin], ['Hedef için gereken müşteri', b.customers_for_target], ['Müşteri edinme maliyeti', b.acquisition_cost]]))}
+  ${renderUE(d)}
   ${card('mvp', 'İlk sürüm (MVP)', `<div class="cols"><div><h4>Olmazsa olmazlar</h4>${list(d.mvp.core_features)}</div><div><h4>Şimdilik yapılmayacaklar</h4>${list(d.mvp.not_now)}</div></div>${facts([['Teknoloji', d.mvp.tech_suggestion], ['Süre', d.mvp.build_weeks]])}`)}
   ${card('riskler', 'Riskler', `<p>Genel yasal risk: ${tag(d.legal_risk)}</p><div class="table-wrap"><table><thead><tr><th>Tür</th><th>Risk</th><th>Önem</th><th>Nasıl azaltılır</th></tr></thead><tbody>${d.risks.map((x) => `<tr><td>${esc(x.type)}</td><td>${esc(x.description)}</td><td>${tag(x.severity)}</td><td>${esc(x.mitigation)}</td></tr>`).join('')}</tbody></table></div>`)}
   ${card('plan', 'Kod yazmadan önce test planı', `${facts([['En riskli varsayım', vp.riskiest_assumption], ['Deney', vp.experiment.method], ['Bütçe / süre', `${vp.experiment.budget} · ${vp.experiment.duration}`], ['Başarı ölçütü', vp.experiment.success_criteria]])}
@@ -283,6 +285,52 @@ function renderDogrulama(d) {
 }
 
 // ---------- pivot ----------
+// ---------- birim ekonomisi (scripts/rapor.py ile aynı hesap; founder-skill/founder-cfo yaklaşımından uyarlandı) ----------
+const sumItems = (a) => (a || []).reduce((t, x) => t + (Number(typeof x === 'object' ? x.tutar : x) || 0), 0);
+function ueYear(price, v, f, start, ramp) {
+  let cum = -start, low = cum, payback = null; const rows = [];
+  ramp.slice(0, 12).forEach((n, i) => { const rev = n * price, cost = n * v + f, pr = rev - cost; cum += pr; low = Math.min(low, cum); if (payback === null && cum >= 0) payback = i + 1; rows.push({ ay: i + 1, musteri: n, gelir: Math.round(rev), maliyet: Math.round(cost), kar: Math.round(pr), kumulatif: Math.round(cum) }); });
+  return { rows, profit: rows.reduce((t, r) => t + r.kar, 0), cash: low < 0 ? Math.round(-low) : 0, payback };
+}
+function computeUE(ue) {
+  const price = Number(ue.fiyat) || 0, v = sumItems(ue.degisken), f = sumItems(ue.sabit_aylik), start = sumItems(ue.baslangic);
+  const ramp = (ue.aylik_rampa || []).map(Number).slice(0, 12); while (ramp.length < 12) ramp.push(ramp.length ? ramp[ramp.length - 1] : 0);
+  const c = price - v, y = ueYear(price, v, f, start, ramp);
+  const sc = (name, p = price, vv = v, ff = f, k = 1) => { const cc = p - vv, yy = ueYear(p, vv, ff, start, ramp.map((x) => x * k)); return { senaryo: name, katki_payi: Math.round(cc * 100) / 100, basa_bas_musteri: cc > 0 ? Math.ceil(ff / cc) : null, yil1_kar: yy.profit, gereken_nakit: yy.cash, geri_odeme_ayi: yy.payback }; };
+  const out = { katki_payi: Math.round(c * 100) / 100, katki_marji_yuzde: price ? Math.round((c / price) * 1000) / 10 : 0, degisken_toplam: v, sabit_toplam: f, baslangic_toplam: start, basa_bas_musteri: c > 0 ? Math.ceil(f / c) : null, aylar: y.rows, yil1_kar: y.profit, gereken_nakit: y.cash, geri_odeme_ayi: y.payback, uyarilar: [],
+    senaryolar: [sc('Plan'), sc('Fiyat %20 düşük', price * 0.8), sc('Müşteri %30 az', price, v, f, 0.7), sc('Müşteri başı maliyet %30 fazla', price, v * 1.3), sc('Sabit gider %20 fazla', price, v, f * 1.2)] };
+  if (ue.hedef_aylik_kar && c > 0) out.hedef_icin_musteri = Math.ceil((f + Number(ue.hedef_aylik_kar)) / c);
+  if (c <= 0) out.uyarilar.push('Her satış zarar ediyor: müşteri başı maliyet fiyattan yüksek veya eşit.');
+  else if (out.katki_marji_yuzde < 50) out.uyarilar.push("Katkı marjı %50'nin altında; yazılım işi için düşük.");
+  if (y.payback === null) out.uyarilar.push('Plan ile ilk 12 ayda başlangıç harcaması geri kazanılamıyor.');
+  return out;
+}
+function renderUE(d) {
+  const ue = d.unit_economics; if (!ue) return '';
+  const h = d.unit_economics_hesap || computeUE(ue), cur = ue.para_birimi || '', c = COLORS();
+  const m = (n) => (n === null || n === undefined ? '—' : `${Math.round(n).toLocaleString('tr-TR')} ${esc(cur)}`);
+  const items = (a) => (a?.length ? `<table><tbody>${a.map((x) => `<tr><td>${esc(x.kalem)}</td><td>${m(x.tutar)}</td><td class="src">${safeUrl(x.kaynak) ? link(x.kaynak) : esc(x.kaynak || '')}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">Yok</p>');
+  const kpi = [['Birim', esc(ue.birim)], ['Fiyat', m(ue.fiyat)], ['Birim başı katkı', `${m(h.katki_payi)} (%${h.katki_marji_yuzde})`], ['Başa baş', h.basa_bas_musteri ? `${h.basa_bas_musteri} ödeme yapan müşteri` : 'Ulaşılamaz'], ['Hedef kâr için', h.hedef_icin_musteri ? `${h.hedef_icin_musteri} müşteri` : '—'], ['1. yıl kâr/zarar', m(h.yil1_kar)], ['Gereken nakit', m(h.gereken_nakit)], ['Geri ödeme', h.geri_odeme_ayi ? `${h.geri_odeme_ayi}. ay` : '12 ayda yok']];
+  const months = h.aylar.map((r) => `${r.ay}. ay`);
+  return card('birim', 'Birim ekonomisi (12 ay)', `
+    ${h.uyarilar?.length ? `<p class="notice"><b>Dikkat:</b> ${esc(h.uyarilar.join(' · '))}</p>` : ''}
+    ${facts(kpi.map(([k, v]) => [k, v, true]))}
+    ${chart('ue', { type: 'bar', data: { labels: months, datasets: [
+      { type: 'bar', label: 'Gelir', data: h.aylar.map((r) => r.gelir), backgroundColor: c[0] },
+      { type: 'bar', label: 'Maliyet', data: h.aylar.map((r) => r.maliyet), backgroundColor: c[2] },
+      { type: 'line', label: 'Kümülatif nakit', data: h.aylar.map((r) => r.kumulatif), borderColor: c[1], backgroundColor: c[1], tension: 0.25 },
+    ] } }, '')}
+    <div class="table-wrap"><table><thead><tr><th>Ay</th><th>Müşteri</th><th>Gelir</th><th>Maliyet</th><th>Kâr</th><th>Kümülatif nakit</th></tr></thead><tbody>${h.aylar.map((r) => `<tr><td>${r.ay}</td><td>${r.musteri}</td><td>${m(r.gelir)}</td><td>${m(r.maliyet)}</td><td class="${r.kar >= 0 ? 't-good' : 't-bad'}">${m(r.kar)}</td><td class="${r.kumulatif >= 0 ? 't-good' : 't-bad'}">${m(r.kumulatif)}</td></tr>`).join('')}</tbody></table></div>
+    <h3>Ya şöyle olursa?</h3>
+    <div class="table-wrap"><table><thead><tr><th>Senaryo</th><th>Birim katkı</th><th>Başa baş müşteri</th><th>1. yıl kâr</th><th>Gereken nakit</th><th>Geri ödeme</th></tr></thead><tbody>${h.senaryolar.map((x) => `<tr><td>${esc(x.senaryo)}</td><td>${m(x.katki_payi)}</td><td>${x.basa_bas_musteri ?? '—'}</td><td class="${x.yil1_kar >= 0 ? 't-good' : 't-bad'}">${m(x.yil1_kar)}</td><td>${m(x.gereken_nakit)}</td><td>${x.geri_odeme_ayi ? x.geri_odeme_ayi + '. ay' : 'yok'}</td></tr>`).join('')}</tbody></table></div>
+    <details><summary>Girdiler ve kaynakları</summary><h4>Birim başı aylık değişken maliyet</h4>${items(ue.degisken)}<h4>Sabit aylık giderler</h4>${items(ue.sabit_aylik)}<h4>Başlangıç harcamaları</h4>${items(ue.baslangic)}${ue.notlar ? `<p class="muted">${esc(ue.notlar)}</p>` : ''}</details>`);
+}
+function renderValueEq(po) {
+  const ve = po.value_equation; if (!ve) return '';
+  const rows = [['dream_outcome', 'Hayal edilen sonuç'], ['likelihood', 'Ulaşma ihtimali'], ['speed', 'Hız'], ['low_effort', 'Az çaba']].map(([k, l]) => { const x = ve[k] || {}; return `<div class="sb-row"><div class="sb-label">${l}</div><div class="sb-bar"><span style="width:${Math.max(0, Math.min(10, x.score || 0)) * 10}%"></span></div><div class="sb-val">${x.score ?? '-'}/10</div><div class="sb-reason">${esc(x.note)}</div></div>`; }).join('');
+  return `<h3>Değer denklemi (teklif ne kadar çekici?)</h3><p class="muted small">Alex Hormozi'nin değer denklemi: sonuç büyük, ulaşma ihtimali yüksek, hızlı ve az çabalı olduğunda teklif çekicidir.</p><div class="sb">${rows}</div>${ve.improvement ? `<p class="notice"><b>En zayıf halka:</b> ${esc(ve.improvement)}</p>` : ''}`;
+}
+
 function renderPivot(d) {
   d.options.forEach((o) => (o.score = o.score || scoreIdea(o.scores, o.legal_risk)));
   const c = COLORS();

@@ -74,6 +74,13 @@ Bir basamağa çıkmak için o basamaktaki kanıtın **bulunmuş** olması gerek
 
 Profil yoksa `founder_fit` puanını 5 ver ve gerekçeye "profil bilgisi yok" yaz.
 
+### İkinci bakış: Hormozi pazar ölçütleri ve Thiel tekel testi
+
+founder-skill/founder-board'un özetlediği iki yayımlanmış çerçeve, puanları çapraz kontrol etmek için kullanılır:
+
+- **Hormozi, *$100M Offers*: iyi pazarın 4 şartı.** Acı büyük (`pain`), alıcıların parası var (`willingness_to_pay`), kolay bulunup ulaşılıyorlar (`reachability`), pazar büyüyor (trend). Bunlardan biri belirgin şekilde zayıfsa, en iyi teklif bile kurtaramaz.
+- **Thiel, *Zero to One*: küçük pazarda tekel.** Önce küçük ve belirli bir pazarı tamamen ele geçirmek, sonra genişlemek. Şunları sor: Bu ürün en iyi alternatiften açıkça (Thiel'e göre yaklaşık 10 kat) daha iyi mi, yoksa sadece biraz mı iyi? Zamanla büyüyen bir avantaj (veri, ağ etkisi, entegrasyon, marka) var mı? İlk hedeflenen pazar, liderliği ele geçirecek kadar küçük mü? Cevaplar "hayır" ise `market_room` ve `giant_safety` puanları 6'yı geçmemeli.
+
 ## Kapılar (puanı sınırlayan durumlar)
 
 Bunlar toplamı otomatik olarak sınırlar. İyi bir bileşen, ölümcül bir zayıflığı telafi edemez.

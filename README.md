@@ -20,7 +20,8 @@ Doğrulama raporunda şunlar bulunur:
 - rakipler: fiyat, puan, indirme sayısı ve şikâyetler
 - pazardaki konum ve trend, konumlandırma cümlesi ve slogan
 - **ASO ve SEO anahtar kelimeleri** (Türkçe ve İngilizce)
-- gelir ve maliyet hesabı, ilk sürüm (MVP) kapsamı
+- gelir ve maliyet hesabı; **birim ekonomisi**: başa baş noktası, 12 aylık kâr/zarar ve nakit grafiği, gereken sermaye, "ya fiyat düşerse" senaryoları
+- teklifin çekiciliği (değer denklemi), ilk sürüm (MVP) kapsamı
 - riskler (yasal, platform, büyük şirketler)
 - kod yazmadan önce yapılacak test, ilk 100 kullanıcıya ulaşma yolları ve "şu olursa bırakın" ölçütleri
 
@@ -37,6 +38,8 @@ Puanı yapay zeka değil kod hesaplar. Para verme isteği veya problemin acısı
 | Platform erişimi (Reddit, YouTube altyazıları, X, LinkedIn) | İsteğe bağlı [Agent-Reach](https://github.com/Panniantong/Agent-Reach) | Web aramasıyla yapılır |
 | Topluluk ve haber araması | İsteğe bağlı [RivalSearch MCP](https://github.com/damionrashford/RivalSearchMCP) (ücretsiz) | Web aramasıyla yapılır |
 | Google, TikTok ve Amazon trend verisi | İsteğe bağlı [Trends MCP](https://github.com/trendsmcp-ai/Trends-MCP) (ayda 100 sorgu ücretsiz) | Trend yorumu haberlere dayanır |
+
+| Fikri işe dönüştürme: teklif, marka, lansman, iş planı | İsteğe bağlı [founder-skill](https://github.com/Jakeschincariol/founder-skill) | Skill doğrulamada durur |
 
 **En iyi sonuç:** Claude Code (veya benzeri, kod çalıştırabilen bir araç) + last30days + RivalSearch MCP.
 
@@ -81,6 +84,7 @@ Hiçbiri zorunlu değil. Kuruluysa skill onları otomatik kullanır.
 - **last30days:** Claude Code'da `/plugin marketplace add mvanhorn/last30days-skill` ve ardından `/plugin install last30days`; diğer araçlarda `npx skills add mvanhorn/last30days-skill -g`
 - **Agent-Reach:** [Kurulum rehberi](https://github.com/Panniantong/Agent-Reach). Reddit ve X için tarayıcı girişi gerekir.
 - **RivalSearch MCP:** Claude Code'da `claude mcp add RivalSearchMCP --url https://RivalSearchMCP.fastmcp.app/mcp`
+- **founder-skill:** Claude Code'da `/plugin marketplace add Jakeschincariol/founder-skill` ve ardından `/plugin install founder-skill@founder-skill`. İyi puan alan bir fikirden sonra skill, teklif, kâr, marka ve lansman adımları için bu paketi önerir. İçindeki sanal alıcı paneli gerçek veri değildir; skill onu sadece siz isterseniz ve "simülasyon" etiketiyle kullanır.
 - **Trends MCP:** [trendsmcp.ai](https://www.trendsmcp.ai/account) adresinden ücretsiz anahtar alıp kendi sayfasındaki adımlarla ekleyin.
 
 ## Kullanım örnekleri
@@ -108,7 +112,7 @@ skills/nis-fikir-bulucu/
 
 ## Yöntemin kaynakları
 
-MaxKmet/idea-validation-agents, allexp1/business-idea-validator-AI-skill, ferdinandobons/startup-skill, assimovt/productskills, phuryn/pm-skills ve msitarzewski/agency-agents projelerinin yöntemlerinden uyarlanmıştır. Hepsi MIT lisanslıdır; ayrıntılar `skills/nis-fikir-bulucu/references/kaynaklar.md` dosyasında.
+MaxKmet/idea-validation-agents, allexp1/business-idea-validator-AI-skill, ferdinandobons/startup-skill, assimovt/productskills, phuryn/pm-skills, msitarzewski/agency-agents ve Jakeschincariol/founder-skill projelerinin yöntemlerinden uyarlanmıştır. Hepsi MIT lisanslıdır; ayrıntılar `skills/nis-fikir-bulucu/references/kaynaklar.md` dosyasında.
 
 ## Eski web uygulaması
 

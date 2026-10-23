@@ -56,6 +56,14 @@ April Dunford "Obviously Awesome" sırasıyla:
 
 Sonra konumlandırma cümlesini yaz: "[En iyi uyan müşteri] için, [alternatif]ten farklı olarak, [değer] sağlayan [kategori]." Bir de kısa slogan (`tagline`) ekle.
 
+**Değer denklemi** (`positioning.value_equation`; Alex Hormozi, *$100M Offers*, founder-skill üzerinden): Teklifin çekiciliğini 4 açıdan 0-10 puanla. Her birinde yüksek puan iyidir:
+- `dream_outcome`: Müşterinin elde edeceği sonuç ne kadar büyük ve istenen bir sonuç?
+- `likelihood`: Müşteri bu sonuca ulaşacağına inanır mı? (kanıt, referans, garanti)
+- `speed`: Sonuç ne kadar çabuk görülür?
+- `low_effort`: Müşteriden ne kadar az çaba isteniyor?
+
+Teklifler çoğunlukla "ulaşma ihtimali" (kanıt yok) veya "çaba" (müşteriden çok şey isteniyor) yüzünden zayıf kalır. `improvement` alanına en zayıf halkayı ve onu güçlendirmenin yolunu yaz. Sadece fiyatı düşürmek bir fark sayılmaz.
+
 ### 6. Anahtar kelimeler → `keywords`
 [aso-seo.md](aso-seo.md) yöntemini uygula. Pazar tercihine göre Türkçe ve/veya İngilizce. En az 8 ASO ve 8 SEO kelimesi.
 
@@ -66,6 +74,21 @@ Sonra konumlandırma cümlesini yaz: "[En iyi uyan müşteri] için, [alternatif
 - **Brüt kâr marjı.**
 - **Hedef için gereken müşteri:** Profildeki aylık gelir hedefi ÷ (fiyat × (1 − kesintiler)). Profil yoksa ayda 5.000 $ varsay ve bunu belirt.
 - **Müşteri edinme maliyeti:** Kanal bazında kaba tahmin; içerik ve topluluk gibi ücretsiz kanallar varsa onları öne çıkar.
+
+**Birim ekonomisi** (`unit_economics`; yaklaşım founder-skill/founder-cfo'dan uyarlandı). Yukarıdaki metin alanlarına ek olarak sayısal girdileri doldur. Hesabı sen yapma; `scripts/rapor.py` (veya şablon) başa baş noktasını, 12 aylık tabloyu, gereken nakdi, geri ödeme ayını ve "ya şöyle olursa" senaryolarını hesaplar.
+
+| Alan | Ne yazılır |
+|---|---|
+| `para_birimi` | TL veya $ (raporun geneliyle aynı) |
+| `birim` | Bir satış birimi, ör. "ödeme yapan diyetisyen-ay", "aylık abone" |
+| `fiyat` | Birim başına aylık fiyat (vergi hariç). Tek seferlik satışta aylık ortalamaya çevir ve `notlar` alanında açıkla. |
+| `degisken` | **Bir birimin** aylık maliyet kalemleri: yapay zeka API'si (kullanım × birim fiyat), sunucu payı, mağaza komisyonu (fiyat × oran), ödeme altyapısı komisyonu |
+| `sabit_aylik` | Satıştan bağımsız aylık giderler: yazılım araçları, alan adı, muhasebe, (varsa) kurucu maaşı |
+| `baslangic` | Bir kerelik harcamalar: geliştirme dışarıdan alınıyorsa, tasarım, hukuk ve KVKK danışmanlığı, lansman reklamı |
+| `aylik_rampa` | İlk 12 ayın her birinde **gerçekçi** ödeme yapan müşteri sayısı. Küçük ekip için yavaş başlar; ilk ay genelde tek haneli. |
+| `hedef_aylik_kar` | Profildeki aylık gelir/kâr hedefi |
+
+Her kalemin `kaynak` alanına bir link (fiyat sayfası, komisyon oranı sayfası) ya da "tahmin: <gerekçe>" yaz. Tahmini gerçek gibi sunma. Komut çıktısındaki `uyarilar` listesini (ör. "her satış zarar ediyor", "12 ayda geri ödeme yok") özet ve risklerde mutlaka kullan.
 
 ### 8. İlk sürüm (MVP) → `mvp`
 Shape Up yaklaşımıyla: problemi çözen **en küçük** ürün. 3-6 olmazsa olmaz özellik. "Şimdilik yapılmayacaklar" listesi en az olmazsa olmazlar kadar uzun olsun. 1-2 kişi + yapay zeka için gerçekçi süre ve teknoloji önerisi.
@@ -111,3 +134,20 @@ Sadece **gerçek veri** varsa ekle:
 ## Bitiş
 
 Sohbette kısa özet ver: karar ve puan, 2 güçlü yan, en büyük risk, test planının ilk adımı ve raporun yolu. Puan 55'in altındaysa pivot önerisinde bulun.
+
+## Sonraki aşama: founder-skill'e devir (kuruluysa)
+
+Puan **55 ve üzeriyse** (Umut verici veya Güçlü) fikir, "işe dönüştürme" aşamasına hazırdır. Ortamda [founder-skill](https://github.com/Jakeschincariol/founder-skill) paketi kuruluysa (`founder-board`, `founder-offer`, `founder-cfo` vb. skill'ler listede görünüyorsa), kullanıcıya şu sırayı öner. Kullanıcı onaylamadan başlatma:
+
+1. `founder-board`: Üç bakış açısıyla (Hormozi teklif, Thiel tekel, Jobs ürün) ikinci görüş.
+2. `founder-offer`: Teklif paketi (bonuslar, garanti, isim). Değer denklemindeki en zayıf halkadan başla.
+3. `founder-cfo`: Daha ayrıntılı kâr hesabı. Bu rapordaki `unit_economics` girdilerini başlangıç noktası olarak ver.
+4. `founder-brand`: İsim, marka tescili, alan adı ve sosyal medya kullanıcı adı kontrolleri.
+5. `founder-marketing` ve `founder-launch`: Lansman kampanyası ve takvimi. Bu rapordaki "İlk 100 kullanıcı" ve test planıyla tutarlı olmalı.
+6. `founder-plan`: Hepsini tek iş planında birleştirir.
+
+Devrederken bu raporun JSON dosyasının yolunu ve şu bilgileri aktar: en iyi uyan müşteri, rakipler ve şikâyetleri, fiyat önerisi, birim ekonomisi girdileri, en riskli varsayım. founder-skill kendi çıktılarını çalışma klasöründeki `founder/` altına yazar.
+
+**Sanal alıcı paneli (`founder-consumer`) hakkında:** Bu panel, yapay zekanın canlandırdığı sanal müşterilerden oluşur; **gerçek veri değildir.** Sadece kullanıcı açıkça isterse çalıştır. İtirazları ve teklif fikirlerini keşfetmek için kullan; sonuçlarını hiçbir zaman ödeme isteğinin kanıtı sayma ve puanlara yansıtma. Rapora eklersen `ek_bolumler` içinde, başlıkta "Simülasyon (gerçek veri değil)" yazarak ekle. Panel çok sayıda alt ajan çalıştırdığı için maliyetlidir; önce `--quick` (20 alıcı) ile başlamayı öner.
+
+founder-skill kurulu değilse kurmaya zorlama; README'deki kurulum adımlarını hatırlatmak yeterli.

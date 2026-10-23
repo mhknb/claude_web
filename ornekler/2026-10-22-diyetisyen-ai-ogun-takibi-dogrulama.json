@@ -1,224 +1,665 @@
 {
-  "tur": "dogrulama",
-  "meta": {
-    "baslik": "Diyetisyenler için yapay zekalı öğün fotoğrafı takibi",
-    "tarih": "2026-10-22",
-    "pazar": "Türkiye",
-    "kullanilan_kaynaklar": ["Claude web araması", "Firecrawl (sayfa okuma)", "App Store arama verisi (iTunes API, Firecrawl üzerinden)", "Google otomatik tamamlama önerileri (Firecrawl üzerinden)", "Reddit r/dietetics (arama özetleri)"],
-    "sinirlamalar": [
-      "TEST ÇALIŞMASI: Kurucu profili girilmedi; kurucu uyumu varsayılan 5 puan.",
-      "Bulut ortamının ağ ayarları Reddit, Hacker News, YouTube, App Store ve Google Play'e doğrudan erişimi engelledi; last30days ve Agent-Reach kurulu olduğu halde veri çekemedi.",
-      "Google Play verisi ve App Store önerileri alınamadı.",
-      "Türk diyetisyenlerin kendi sözleriyle şikâyetleri (Ekşi Sözlük, Instagram, Facebook grupları) toplanamadı."
-    ]
-  },
-  "summary": {
-    "idea_name": "Diyetisyen AI Öğün Takibi",
-    "one_liner": "Serbest çalışan diyetisyenlerin, danışanlarının gönderdiği yemek fotoğraflarını yapay zekayla analiz edip haftalık rapor çıkaran mobil uygulama ve web paneli.",
-    "verdict_reason": "Diyetisyenlerin danışan takibine para ödediğine dair güçlü işaretler var: rakip Nutrirelay takip edilen danışan başına aylık 249 TL alıyor, birçok diyetisyen kendi markalı uygulamasını yaptırmış. Ancak tam olarak bu fikri yapan en az bir yerli rakip (Nutrirelay) ve benzer özellikler sunan 4-5 platform zaten pazarda. Ayrıca yapay zekanın fotoğraftan kalori tahmini bağımsız testlerde ciddi hata yapıyor ve sağlık verisinin yurt dışındaki yapay zeka servislerine gönderilmesi KVKK açısından ek iş gerektiriyor. Bu haliyle farklılaşma alanı dar.",
-    "biggest_risk": "Aynı ürünü zaten sunan Nutrirelay (diyetisyenim.app) ve diğer yerli platformlar karşısında net bir fark yaratamamak.",
-    "next_action": "Instagram'da serbest çalışan 15 diyetisyenle Mom Test görüşmesi yapın: bugün danışan fotoğraflarını nasıl takip ediyorlar, Nutrirelay veya benzerini denediler mi, neden bıraktılar?"
-  },
-  "scores": {
-    "pain": { "score": 5, "reason": "Diyetisyenlerin porsiyonu görmek için danışanlardan öğün fotoğrafı istediği kanıtlı (r/dietetics) ve bu ihtiyaç için birçok platform kurulmuş; ancak Türk diyetisyenlerin bu işi acı verici bulduğuna dair doğrudan alıntı toplanamadı." },
-    "willingness_to_pay": { "score": 6, "reason": "Nutrirelay takipli danışan başına aylık 249 TL alıyor, Nutrium aylık 19-49 $; birçok diyetisyen kendi markalı uygulamasını yaptırmış. Rakiplerin ödeme yapan müşteri sayısı doğrulanamadı." },
-    "market_room": { "score": 3, "reason": "Türkiye'de aynı fikri yapan Nutrirelay ve benzer özellikli DiyetisyenimApp, Fitim, Fithiz gibi platformlar var; globalde Nutrium, Healthie ve Practice Better fotoğraflı yemek günlüğü sunuyor." },
-    "reachability": { "score": 6, "reason": "Diyetisyenler Instagram'da aktif ve kendilerini orada pazarlıyor; 'diyetisyen takip programı' ve 'diyetisyen yönetim programı' gibi aramalar Google önerilerinde çıkıyor. Ancak rakipler de aynı kanalları kullanıyor." },
-    "giant_safety": { "score": 6, "reason": "ChatGPT ve tüketici kalori uygulamaları (fatsecret vb.) fotoğraftan kalori tahmini yapıyor; ama diyetisyen paneli, onay akışı ve danışan yönetimi nişe özel bir iş akışı." },
-    "buildability": { "score": 6, "reason": "Hazır yapay zeka servisleriyle 2-3 ayda ilk sürüm çıkar; ancak KVKK sağlık verisi gereklilikleri ve fotoğraftan kalori tahmininin düşük doğruluğu ek iş ve dikkat gerektirir." },
-    "founder_fit": { "score": 5, "reason": "Profil bilgisi yok (test çalışması)." }
-  },
-  "problem_validation": {
-    "problem": "Diyetisyenler görüşmeler arasında danışanlarının ne yediğini bilmek istiyor. Fotoğraflar çoğunlukla WhatsApp gibi dağınık kanallardan geliyor, tek tek bakılıyor ve haftalık bir özete dönüştürülmesi zaman alıyor.",
-    "frequency": "yüksek",
-    "intensity": "orta",
-    "current_workarounds": [
-      "Danışanlardan öğün fotoğraflarını WhatsApp ile istemek",
-      "Danışanlara MyFitnessPal gibi tüketici uygulamalarında kayıt tutturmak ve kayıtları kontrol etmek",
-      "Nutrium, Healthie, Practice Better gibi ücretli yönetim yazılımlarının yemek günlüğü özelliği",
-      "Kendi markalı mobil uygulama yaptırmak (ölçüm, diyet listesi, mesajlaşma)"
-    ],
-    "user_quotes": [
-      { "quote": "You can start by asking them to take pictures of their meals so you can see portion size.", "url": "https://www.reddit.com/r/dietetics/comments/1kshh0x/weight_management_how_to_work_with_these_two/" },
-      { "quote": "Check their MFP journal to make sure they're selecting appropriate items from the library. It's a deep dive into the details.", "url": "https://www.reddit.com/r/dietetics/comments/1gvx4en/client_cant_lose_weight/" },
-      { "quote": "App Performance: Healthie's app often felt slow, whereas Practice Better's app has been reliable and user-friendly.", "url": "https://www.reddit.com/r/dietetics/comments/17bxfz6/best_ehr_for_virtual_practice/" }
-    ]
-  },
-  "audience": {
-    "segments": [
-      {
-        "name": "Online danışmanlık veren serbest diyetisyenler",
-        "description": "Kendi muayenehanesi olan veya tamamen online çalışan, danışanlarını Instagram üzerinden bulan diyetisyenler.",
-        "size_estimate": "Tahmin: Türkiye'de yaklaşık 55.500 diyetisyen hesaplanmış (Hacettepe, 2025); serbest çalışanların oranı doğrulanamadı. %20 varsayımıyla ~11.000 kişi (tahmin).",
-        "willingness_to_pay": "yüksek",
-        "wtp_evidence": "Danışandan aylık 3.000-8.000 TL alıyorlar; rakip Nutrirelay takipli danışan başına aylık 249 TL fiyatla satıyor; birçoğu kendi markalı uygulama yaptırmış.",
-        "expectations": [
-          "Danışan sadece fotoğraf çeksin, gerisi otomatik olsun",
-          "Yapay zeka tahmini yapsın ama son sözü diyetisyen versin (onay akışı)",
-          "Ölçüm, randevu ve öğünler tek ekranda dursun",
-          "Kendi markalarıyla görünmek (danışana profesyonel izlenim)"
-        ],
-        "pains": [
-          "WhatsApp'ta dağılan fotoğraflar ve mesajlar",
-          "Görüşmeler arasında danışanın kopması",
-          "Haftalık özet hazırlamanın zaman alması"
-        ],
-        "platforms": [
-          { "name": "Instagram (diyetisyen hesapları ve reklamlar)", "url": "https://www.instagram.com/p/DXvvT0TDBA1/", "note": "Diyetisyen yazılımları burada AI öğün analizi gibi özelliklerle tanıtılıyor." },
-          { "name": "Doktortakvimi / Doktorsitesi profilleri", "url": "https://www.doktortakvimi.com/profil/beyzanur-saglam-2", "note": "Diyetisyenlerin danışan bulduğu randevu siteleri." },
-          { "name": "r/dietetics", "url": "https://www.reddit.com/r/dietetics/", "note": "Global diyetisyen topluluğu; yazılım ve danışan takibi tartışılıyor." }
-        ],
-        "validated": true,
-        "evidence": [
-          { "claim": "Rakip, takipli danışan başına aylık 249 TL ücret alıyor (10 danışan paketi 2.490 TL)", "url": "https://www.diyetisyenim.app/" },
-          { "claim": "Diyetisyen danışmanlık ücretleri aylık 3.000-8.000 TL arasında", "url": "https://www.habergazetesi.com.tr/diyetisyen-fiyatlari-2025-ne-kadar" },
-          { "claim": "App Store'da çok sayıda diyetisyenin kendi markalı uygulaması var (ör. Uzm. Dyt. Nagehan Afşar, Diyetisyen Büşra Uzuner)", "url": "https://apps.apple.com/tr/app/id6443452225" }
-        ]
-      },
-      {
-        "name": "Diyet ve beslenme klinikleri (birden fazla diyetisyen)",
-        "description": "Birkaç diyetisyenin çalıştığı, kurumsal veya sporcu takibi de yapan klinikler.",
-        "size_estimate": "Doğrulanamadı.",
-        "willingness_to_pay": "yüksek",
-        "wtp_evidence": "Kurumsal ve sporcu takibinde aylık 7.000-8.000 TL ücret alınıyor; rakip 100 ve 200+ danışanlık klinik paketleri sunuyor.",
-        "expectations": ["Çoklu diyetisyen hesabı", "Toplu raporlama", "Kurumsal danışanlar için düzenli rapor"],
-        "pains": ["Diyetisyenler arası tutarsız takip", "Danışan verisinin dağınık olması"],
-        "platforms": [
-          { "name": "LinkedIn", "url": "", "note": "Kurumsal beslenme hizmetleri (doğrulanmadı)." }
-        ],
-        "validated": false,
-        "evidence": [
-          { "claim": "Rakip Nutrirelay 100 ve 200+ danışanlık klinik/kurumsal paketler sunuyor", "url": "https://www.diyetisyenim.app/" }
-        ]
-      }
-    ],
-    "excluded_segments": [
-      { "name": "Kendi başına diyet yapan bireyler", "reason": "Ücretsiz kalori uygulamaları (fatsecret, DietLab gibi binlerce değerlendirmeli uygulamalar) ve ChatGPT bu ihtiyacı karşılıyor; para verme isteği düşük ve pazar doymuş." },
-      { "name": "Kamu hastanelerinde çalışan diyetisyenler", "reason": "Satın alma kararı kurumda; küçük ekip için uzun ve zor satış süreci." }
-    ]
-  },
-  "competitors": [
-    { "name": "Nutrirelay (diyetisyenim.app)", "kind": "doğrudan", "platform": "iOS, web", "url": "https://www.diyetisyenim.app/", "pricing": "Takipli danışan başına aylık 199,95-249 TL (10 danışan: 2.490 TL/ay + KDV); 7 gün ücretsiz deneme", "traction": "App Store'da Eylül 2026'da yayınlandı, henüz değerlendirme yok", "strengths": ["Fotoğraftan kalori tahmini aralık ve güven düzeyiyle", "Diyetisyen onay akışı", "AB sunucuları, isim yapay zekaya gönderilmiyor, KVKK metni", "Görüşme notunu menü ve hedefe ayıran yapay zeka asistanı"], "weaknesses": ["Çok yeni, kullanıcı yorumu yok (zayıf yan doğrulanamadı)", "Danışan başı fiyat çok danışanlı diyetisyen için pahalı olabilir (tahmin)"], "is_giant": false },
-    { "name": "DiyetisyenimApp", "kind": "doğrudan", "platform": "web", "url": "https://diyetisyenimapp.com/", "pricing": "Fiyat sayfada bulunamadı; arama sonucunda 90 gün ücretsiz deneme", "traction": "Doğrulanamadı", "strengths": ["Randevu, diyet listesi, ölçüm ve danışan yönetimi", "Güçlü SEO anahtar kelimeleri"], "weaknesses": ["Öğün fotoğrafı analizi görünmüyor (doğrulanamadı)"], "is_giant": false },
-    { "name": "Fitim", "kind": "doğrudan", "platform": "iOS", "url": "https://apps.apple.com/us/app/fitim-app/id6474455083", "pricing": "Ücretsiz + uygulama içi satın alma", "traction": "Doğrulanamadı", "strengths": ["Diyet planı oluşturma ve danışan takibi"], "weaknesses": ["Fiyat ve kullanıcı sayısı bilgisi yok"], "is_giant": false },
-    { "name": "Nutrium", "kind": "dolaylı", "platform": "web, iOS, Android", "url": "https://nutrium.com/pricing", "pricing": "Yıllık ödemede aylık 15-19 $, aylık ödemede 25-49 $", "traction": "Kendini dünyanın 1 numaralı beslenme yazılımı olarak tanıtıyor", "strengths": ["Danışan mobil uygulaması ve yemek günlüğü", "Yapay zeka görüşme özetleri"], "weaknesses": ["Türkiye'ye özel fiyat ve dil desteği doğrulanamadı"], "is_giant": false },
-    { "name": "Healthie / Practice Better", "kind": "dolaylı", "platform": "web, mobil", "url": "https://www.reddit.com/r/dietetics/comments/17bxfz6/best_ehr_for_virtual_practice/", "pricing": "Doğrulanamadı", "traction": "r/dietetics'te sık önerilen yazılımlar", "strengths": ["Fotoğraflı yemek günlüğü (Healthie)", "Güvenilir uygulama (Practice Better)"], "weaknesses": ["Healthie uygulamasının yavaş olduğu söyleniyor", "ABD odaklı"], "is_giant": false },
-    { "name": "WhatsApp + kendi markalı uygulamalar", "kind": "manuel yöntem", "platform": "WhatsApp, iOS", "url": "https://apps.apple.com/tr/app/id6758719823", "pricing": "WhatsApp ücretsiz; özel uygulama geliştirme maliyeti doğrulanamadı", "traction": "App Store'da en az 5 diyetisyenin kendi uygulaması (en yükseği 38 değerlendirme)", "strengths": ["Danışanlar zaten WhatsApp kullanıyor, kurulum gerekmiyor"], "weaknesses": ["Fotoğraflar dağınık, otomatik özet yok"], "is_giant": false }
+ "tur": "dogrulama",
+ "meta": {
+  "baslik": "Diyetisyenler için yapay zekalı öğün fotoğrafı takibi",
+  "tarih": "2026-10-22",
+  "pazar": "Türkiye",
+  "kullanilan_kaynaklar": [
+   "Claude web araması",
+   "Firecrawl (sayfa okuma)",
+   "App Store arama verisi (iTunes API, Firecrawl üzerinden)",
+   "Google otomatik tamamlama önerileri (Firecrawl üzerinden)",
+   "Reddit r/dietetics (arama özetleri)"
   ],
-  "market_position": {
-    "saturation": "yüksek",
-    "giants_present": "Doğrudan bir dev yok; ancak ChatGPT ve tüketici kalori uygulamaları fotoğraftan kalori tahmini yapıyor.",
-    "trend": "Türkiye'de son bir yılda en az iki yeni diyetisyen platformu çıkmış (Nutrirelay Eylül 2026, DiyetisyenimApp). Yapay zekalı öğün analizi Instagram reklamlarında öne çıkan bir özellik. Trend verisi (Google Trends) alınamadı.",
-    "gap": "Rakiplerin henüz kullanıcı yorumu yok; WhatsApp üzerinden, danışana uygulama indirtmeden çalışan bir çözüm bulunamadı.",
-    "why_now": "Görüntü tanıyan yapay zeka modelleri ucuzladı; ancak aynı fırsatı rakipler de yakaladı, bu yüzden zamanlama avantajı yok."
-  },
-  "positioning": {
-    "statement": "Danışanlarını WhatsApp'tan takip eden serbest diyetisyenler için, karmaşık yönetim yazılımlarından farklı olarak, danışana uygulama indirtmeden öğün fotoğraflarını haftalık rapora çeviren takip asistanı.",
-    "category": "Diyetisyen danışan takip asistanı",
-    "competitive_alternatives": ["WhatsApp ile el ile takip", "Nutrirelay, DiyetisyenimApp gibi yerli platformlar", "Nutrium gibi global yazılımlar"],
-    "unique_attributes": ["Danışan tarafında uygulama gerekmeyen, WhatsApp tabanlı akış (doğrulanmamış fark)", "Haftalık otomatik rapor"],
-    "value": "Diyetisyenin danışan başına haftalık takip süresini azaltması (ölçülmedi)",
-    "best_fit_customer": "Çoğunlukla online çalışan, 20-60 aktif danışanı olan serbest diyetisyen",
-    "tagline": "Danışan fotoğraf atsın, rapor size gelsin."
-  },
-  "keywords": {
-    "app_name_ideas": ["Öğün Takip - Diyetisyen Asistanı", "Danışan Takip: Diyetisyen"],
-    "app_subtitle": "Fotoğraftan haftalık rapor",
-    "aso": [
-      { "keyword": "diyetisyen takip", "language": "tr", "competition": "orta", "relevance": "yüksek", "source": "Google önerisi: 'diyetisyen takip programı', 'diyetisyen takip uygulaması'" },
-      { "keyword": "diyetisyen", "language": "tr", "competition": "orta", "relevance": "orta", "source": "App Store araması: ilk 15'te 1000+ değerlendirmeli 2 uygulama (DietLab, fatsecret)" },
-      { "keyword": "danışan takip", "language": "tr", "competition": "orta", "relevance": "yüksek", "source": "Rakip anahtar kelimeleri (DiyetisyenimApp); rekabet ölçülmedi" },
-      { "keyword": "yemek fotoğrafı kalori", "language": "tr", "competition": "yüksek", "relevance": "orta", "source": "Google önerisi: 'yemek fotoğrafı ile kalori hesaplama'; tüketici uygulamalarıyla çakışır (tahmin)" }
-    ],
-    "seo": [
-      { "keyword": "diyetisyen takip programı", "language": "tr", "intent": "satın alma", "competition": "orta", "content_idea": "Ürün ana sayfası ve özellik karşılaştırması" },
-      { "keyword": "diyetisyen yönetim programı", "language": "tr", "intent": "satın alma", "competition": "orta", "content_idea": "Fiyatlandırma sayfası" },
-      { "keyword": "diyetisyenler randevu programı", "language": "tr", "intent": "satın alma", "competition": "orta", "content_idea": "Randevu özelliği sayfası" },
-      { "keyword": "diyetisyen programı online", "language": "tr", "intent": "karşılaştırma", "competition": "orta", "content_idea": "En iyi diyetisyen programları karşılaştırması" },
-      { "keyword": "ücretsiz diyetisyen programı", "language": "tr", "intent": "karşılaştırma", "competition": "orta", "content_idea": "Ücretsiz deneme sürümü sayfası (ücretsiz arayanların çoğu ödeme yapmayabilir)" },
-      { "keyword": "yemek fotoğrafı ile kalori hesaplama", "language": "tr", "intent": "bilgi", "competition": "yüksek", "content_idea": "Yapay zekanın fotoğraftan kalori tahmini ne kadar doğru? (NIH çalışması üzerine yazı)" }
-    ]
-  },
-  "business": {
-    "pricing_model": "Diyetisyen başına aylık abonelik (danışan sayısına göre kademeli). Danışan tarafı ücretsiz.",
-    "suggested_price": "Aylık 599-1.499 TL kademeli paket (tahmin). Nutrirelay'in 10 danışan için 2.490 TL'sinin altında kalarak küçük diyetisyenleri hedefler.",
-    "cost_per_user_month": "Tahmin: 40 aktif danışan × günde 3 fotoğraf × 30 gün = 3.600 analiz. Fotoğraf başı 0,2-0,5 sent yapay zeka maliyetiyle aylık 7-18 $. Bu, düşük fiyatlı pakette marjı ciddi şekilde düşürür.",
-    "gross_margin": "Tahmin: %40-70, fotoğraf sayısına bağlı. Pakette aylık analiz sınırı konmalı.",
-    "customers_for_target": "Profil yok; aylık 5.000 $ (~170.000 TL) hedefi varsayıldı. Ortalama 1.000 TL/ay ile yaklaşık 170 ödeme yapan diyetisyen gerekir.",
-    "acquisition_cost": "Instagram reklamı ve içerik; rakipler de aynı kanalda olduğu için maliyet doğrulanamadı."
-  },
-  "mvp": {
-    "core_features": ["WhatsApp üzerinden öğün fotoğrafı toplama", "Yapay zeka ile öğün tahmini ve diyetisyen onayı", "Danışan başına haftalık otomatik rapor (PDF/web)", "Basit diyetisyen paneli (danışan listesi, ölçüm)"],
-    "not_now": ["Diyet listesi oluşturucu", "Randevu sistemi", "Ödeme altyapısı", "Klinik/çoklu kullanıcı", "Kendi markalı mobil uygulama", "Sağlık uygulaması entegrasyonları"],
-    "tech_suggestion": "Web panel + WhatsApp Business API + görüntü tanıyan yapay zeka API'si; veriler AB veya Türkiye'de.",
-    "build_weeks": "6-10 hafta (1-2 kişi + yapay zeka)"
-  },
-  "risks": [
-    { "type": "pazar", "description": "Nutrirelay aynı ürünü yeni çıkardı; birden fazla yerli platform var.", "severity": "yüksek", "mitigation": "Dar bir segmente odaklanmak veya danışana uygulama indirtmeyen WhatsApp akışıyla ayrışmak." },
-    { "type": "yasal", "description": "Öğün fotoğrafları ve kilo verisi sağlık verisidir. 2024 KVKK değişikliğinden sonra yurt dışına aktarım açık rızayla sadece arızi durumlarda yapılabiliyor.", "severity": "yüksek", "mitigation": "Yapay zeka sağlayıcısıyla standart sözleşme ve KVKK bildirimi, isimsizleştirme, AB veya Türkiye'de veri saklama, hukukçu görüşü." },
-    { "type": "teknik", "description": "NIH çalışmasında fotoğraf tabanlı uygulamalar öğün kalorisini ortalama 250-345 kcal düşük tahmin etti.", "severity": "orta", "mitigation": "Kesin kalori yerine aralık ve güven düzeyi göstermek, diyetisyen onayını zorunlu tutmak." },
-    { "type": "platform", "description": "WhatsApp Business API'nin fiyat ve politika değişiklikleri.", "severity": "orta", "mitigation": "Alternatif olarak web üzerinden fotoğraf yükleme bağlantısı." },
-    { "type": "dev şirketler", "description": "Genel yapay zeka asistanları fotoğraftan kalori tahmini yapıyor.", "severity": "düşük", "mitigation": "Diyetisyen iş akışına (onay, rapor, danışan yönetimi) odaklanmak." }
-  ],
-  "legal_risk": "orta",
-  "validation_plan": {
-    "riskiest_assumption": "Serbest diyetisyenler, mevcut yerli platformlar varken WhatsApp tabanlı yeni bir takip asistanına geçip para öder.",
-    "experiment": {
-      "method": "Mom Test görüşmeleri + ön satışlı tanıtım sayfası",
-      "steps": [
-        "Instagram'da online çalışan 30 serbest diyetisyene ulaşıp 15 görüşme ayarla",
-        "Fikri anlatmadan sor: en son ne zaman danışan fotoğraflarını takip ettiniz, nasıl, ne kadar sürdü, hangi aracı denediniz?",
-        "Tek sayfalık tanıtım sayfası ve 'ilk 3 ay %50 indirim' ön satışı",
-        "Görüşme yapan diyetisyenlere ön satış bağlantısını gönder"
-      ],
-      "budget": "50 $ altı (alan adı + sayfa)",
-      "duration": "2 hafta",
-      "success_criteria": "15 görüşmenin en az 8'inde haftalık fotoğraf takibi yapılıyor ve mevcut yöntemden memnuniyetsizlik var; en az 3 ön ödeme."
-    },
-    "first_100_users": [
-      { "channel": "Instagram DM", "tactic": "Online danışmanlık veren diyetisyenlere kişisel mesajla ücretsiz pilot önermek" },
-      { "channel": "Diyetisyen içerik üreticileri", "tactic": "Takipçisi yüksek 2-3 diyetisyenle gelir paylaşımlı tanıtım" },
-      { "channel": "SEO", "tactic": "'diyetisyen takip programı' ve 'diyetisyen programı online' için karşılaştırma sayfası" }
-    ],
-    "kill_criteria": [
-      "2 hafta içinde 15 görüşmenin 8'inden azında problem doğrulanmazsa bırak",
-      "6 hafta içinde 5 ödeme yapan diyetisyen bulunamazsa bırak veya pivot yap"
-    ]
-  },
-  "pivot_hints": [
-    "Hedef kitleyi daralt: sporcu diyetisyenleri, gebelik veya diyabet gibi tek bir uzmanlık alanı",
-    "Danışan tarafında uygulama gerektirmeyen WhatsApp akışını ana fark olarak öne çıkar",
-    "Türkçe konuşulan diğer pazarlar veya yurt dışındaki Türk diyetisyenler"
-  ],
-  "data_gaps": [
-    "Türkiye'de serbest çalışan diyetisyen sayısı",
-    "Türk diyetisyenlerin bu problemle ilgili kendi sözleri (Ekşi Sözlük, Instagram, Facebook grupları)",
-    "Rakiplerin ödeme yapan müşteri sayıları ve kullanıcı yorumları",
-    "Google Play verisi ve App Store anahtar kelime önerileri",
-    "Google Trends verisi",
-    "DiyetisyenimApp, Fitim ve Fithiz fiyatları"
-  ],
-  "sources": [
-    { "title": "Nutrirelay / diyetisyenim.app fiyat ve özellikler", "url": "https://www.diyetisyenim.app/" },
-    { "title": "DiyetisyenimApp", "url": "https://diyetisyenimapp.com/" },
-    { "title": "Nutrium fiyatlandırma", "url": "https://nutrium.com/pricing" },
-    { "title": "Diyetisyen fiyatları 2025 (Habergazetesi)", "url": "https://www.habergazetesi.com.tr/diyetisyen-fiyatlari-2025-ne-kadar" },
-    { "title": "Beslenme ve diyetetik programlarının durumu 2022-2025 (Hacettepe)", "url": "https://avesis.hacettepe.edu.tr/yayin/2fb128ba-ff3d-4230-be31-2caf13bedb63/beslenme-ve-diyetetik-lisans-programlarinin-mevcut-durumu-2022-yilindan-2025-yilina-neler-degisti" },
-    { "title": "Serbest çalışan diyetisyenler mevzuat kıskacında (İndigo)", "url": "https://indigodergisi.com/2025/07/serbest-calisan-diyetisyenler-mevzuat-kiskacinda/" },
-    { "title": "Fotoğraf tabanlı kalori uygulamaları kaloriyi düşük tahmin ediyor (NIH çalışması)", "url": "https://www.newswise.com/articles/photo-based-calorie-tracking-apps-may-underestimate-energy-in-meals" },
-    { "title": "KVKK'da neler değişti (Erdem & Erdem)", "url": "https://www.erdem-erdem.av.tr/bilgi-bankasi/kisisel-verilerin-korunmasi-kanununda-neler-degisti" },
-    { "title": "r/dietetics: Weight management", "url": "https://www.reddit.com/r/dietetics/comments/1kshh0x/weight_management_how_to_work_with_these_two/" },
-    { "title": "r/dietetics: Best EHR for virtual practice", "url": "https://www.reddit.com/r/dietetics/comments/17bxfz6/best_ehr_for_virtual_practice/" },
-    { "title": "Fitim (App Store)", "url": "https://apps.apple.com/us/app/fitim-app/id6474455083" }
-  ],
-  "ek_grafikler": [
-    {
-      "baslik": "App Store'da \"diyetisyen\" araması: değerlendirme sayıları (Türkiye)",
-      "tur": "bar",
-      "etiketler": ["fatsecret", "Lifie", "DietLab", "Nutria", "HiDoctor", "Uzm. Dyt. Nagehan Afşar", "SmartBites", "E-Diyetisyen", "MELLClub", "Diyetisyenim.app"],
-      "seriler": [{ "ad": "Değerlendirme sayısı", "veri": [10698, 16009, 8087, 770, 259, 38, 25, 20, 8, 0] }],
-      "aciklama": "iTunes Search API, ülke: TR, 2026-10-22. Yüksek sayılı olanlar tüketici diyet uygulamaları; diyetisyen odaklı uygulamaların hepsi 40 değerlendirmenin altında.",
-      "kaynak_url": "https://itunes.apple.com/search?term=diyetisyen&country=tr&entity=software&limit=15"
-    }
+  "sinirlamalar": [
+   "TEST ÇALIŞMASI: Kurucu profili girilmedi; kurucu uyumu varsayılan 5 puan.",
+   "Bulut ortamının ağ ayarları Reddit, Hacker News, YouTube, App Store ve Google Play'e doğrudan erişimi engelledi; last30days ve Agent-Reach kurulu olduğu halde veri çekemedi.",
+   "Google Play verisi ve App Store önerileri alınamadı.",
+   "Türk diyetisyenlerin kendi sözleriyle şikâyetleri (Ekşi Sözlük, Instagram, Facebook grupları) toplanamadı."
   ]
+ },
+ "summary": {
+  "idea_name": "Diyetisyen AI Öğün Takibi",
+  "one_liner": "Serbest çalışan diyetisyenlerin, danışanlarının gönderdiği yemek fotoğraflarını yapay zekayla analiz edip haftalık rapor çıkaran mobil uygulama ve web paneli.",
+  "verdict_reason": "Diyetisyenlerin danışan takibine para ödediğine dair güçlü işaretler var: rakip Nutrirelay takip edilen danışan başına aylık 249 TL alıyor, birçok diyetisyen kendi markalı uygulamasını yaptırmış. Ancak tam olarak bu fikri yapan en az bir yerli rakip (Nutrirelay) ve benzer özellikler sunan 4-5 platform zaten pazarda. Ayrıca yapay zekanın fotoğraftan kalori tahmini bağımsız testlerde ciddi hata yapıyor ve sağlık verisinin yurt dışındaki yapay zeka servislerine gönderilmesi KVKK açısından ek iş gerektiriyor. Bu haliyle farklılaşma alanı dar.",
+  "biggest_risk": "Aynı ürünü zaten sunan Nutrirelay (diyetisyenim.app) ve diğer yerli platformlar karşısında net bir fark yaratamamak.",
+  "next_action": "Instagram'da serbest çalışan 15 diyetisyenle Mom Test görüşmesi yapın: bugün danışan fotoğraflarını nasıl takip ediyorlar, Nutrirelay veya benzerini denediler mi, neden bıraktılar?"
+ },
+ "scores": {
+  "pain": {
+   "score": 5,
+   "reason": "Diyetisyenlerin porsiyonu görmek için danışanlardan öğün fotoğrafı istediği kanıtlı (r/dietetics) ve bu ihtiyaç için birçok platform kurulmuş; ancak Türk diyetisyenlerin bu işi acı verici bulduğuna dair doğrudan alıntı toplanamadı."
+  },
+  "willingness_to_pay": {
+   "score": 6,
+   "reason": "Nutrirelay takipli danışan başına aylık 249 TL alıyor, Nutrium aylık 19-49 $; birçok diyetisyen kendi markalı uygulamasını yaptırmış. Rakiplerin ödeme yapan müşteri sayısı doğrulanamadı."
+  },
+  "market_room": {
+   "score": 3,
+   "reason": "Türkiye'de aynı fikri yapan Nutrirelay ve benzer özellikli DiyetisyenimApp, Fitim, Fithiz gibi platformlar var; globalde Nutrium, Healthie ve Practice Better fotoğraflı yemek günlüğü sunuyor."
+  },
+  "reachability": {
+   "score": 6,
+   "reason": "Diyetisyenler Instagram'da aktif ve kendilerini orada pazarlıyor; 'diyetisyen takip programı' ve 'diyetisyen yönetim programı' gibi aramalar Google önerilerinde çıkıyor. Ancak rakipler de aynı kanalları kullanıyor."
+  },
+  "giant_safety": {
+   "score": 6,
+   "reason": "ChatGPT ve tüketici kalori uygulamaları (fatsecret vb.) fotoğraftan kalori tahmini yapıyor; ama diyetisyen paneli, onay akışı ve danışan yönetimi nişe özel bir iş akışı."
+  },
+  "buildability": {
+   "score": 6,
+   "reason": "Hazır yapay zeka servisleriyle 2-3 ayda ilk sürüm çıkar; ancak KVKK sağlık verisi gereklilikleri ve fotoğraftan kalori tahmininin düşük doğruluğu ek iş ve dikkat gerektirir."
+  },
+  "founder_fit": {
+   "score": 5,
+   "reason": "Profil bilgisi yok (test çalışması)."
+  }
+ },
+ "problem_validation": {
+  "problem": "Diyetisyenler görüşmeler arasında danışanlarının ne yediğini bilmek istiyor. Fotoğraflar çoğunlukla WhatsApp gibi dağınık kanallardan geliyor, tek tek bakılıyor ve haftalık bir özete dönüştürülmesi zaman alıyor.",
+  "frequency": "yüksek",
+  "intensity": "orta",
+  "current_workarounds": [
+   "Danışanlardan öğün fotoğraflarını WhatsApp ile istemek",
+   "Danışanlara MyFitnessPal gibi tüketici uygulamalarında kayıt tutturmak ve kayıtları kontrol etmek",
+   "Nutrium, Healthie, Practice Better gibi ücretli yönetim yazılımlarının yemek günlüğü özelliği",
+   "Kendi markalı mobil uygulama yaptırmak (ölçüm, diyet listesi, mesajlaşma)"
+  ],
+  "user_quotes": [
+   {
+    "quote": "You can start by asking them to take pictures of their meals so you can see portion size.",
+    "url": "https://www.reddit.com/r/dietetics/comments/1kshh0x/weight_management_how_to_work_with_these_two/"
+   },
+   {
+    "quote": "Check their MFP journal to make sure they're selecting appropriate items from the library. It's a deep dive into the details.",
+    "url": "https://www.reddit.com/r/dietetics/comments/1gvx4en/client_cant_lose_weight/"
+   },
+   {
+    "quote": "App Performance: Healthie's app often felt slow, whereas Practice Better's app has been reliable and user-friendly.",
+    "url": "https://www.reddit.com/r/dietetics/comments/17bxfz6/best_ehr_for_virtual_practice/"
+   }
+  ]
+ },
+ "audience": {
+  "segments": [
+   {
+    "name": "Online danışmanlık veren serbest diyetisyenler",
+    "description": "Kendi muayenehanesi olan veya tamamen online çalışan, danışanlarını Instagram üzerinden bulan diyetisyenler.",
+    "size_estimate": "Tahmin: Türkiye'de yaklaşık 55.500 diyetisyen hesaplanmış (Hacettepe, 2025); serbest çalışanların oranı doğrulanamadı. %20 varsayımıyla ~11.000 kişi (tahmin).",
+    "willingness_to_pay": "yüksek",
+    "wtp_evidence": "Danışandan aylık 3.000-8.000 TL alıyorlar; rakip Nutrirelay takipli danışan başına aylık 249 TL fiyatla satıyor; birçoğu kendi markalı uygulama yaptırmış.",
+    "expectations": [
+     "Danışan sadece fotoğraf çeksin, gerisi otomatik olsun",
+     "Yapay zeka tahmini yapsın ama son sözü diyetisyen versin (onay akışı)",
+     "Ölçüm, randevu ve öğünler tek ekranda dursun",
+     "Kendi markalarıyla görünmek (danışana profesyonel izlenim)"
+    ],
+    "pains": [
+     "WhatsApp'ta dağılan fotoğraflar ve mesajlar",
+     "Görüşmeler arasında danışanın kopması",
+     "Haftalık özet hazırlamanın zaman alması"
+    ],
+    "platforms": [
+     {
+      "name": "Instagram (diyetisyen hesapları ve reklamlar)",
+      "url": "https://www.instagram.com/p/DXvvT0TDBA1/",
+      "note": "Diyetisyen yazılımları burada AI öğün analizi gibi özelliklerle tanıtılıyor."
+     },
+     {
+      "name": "Doktortakvimi / Doktorsitesi profilleri",
+      "url": "https://www.doktortakvimi.com/profil/beyzanur-saglam-2",
+      "note": "Diyetisyenlerin danışan bulduğu randevu siteleri."
+     },
+     {
+      "name": "r/dietetics",
+      "url": "https://www.reddit.com/r/dietetics/",
+      "note": "Global diyetisyen topluluğu; yazılım ve danışan takibi tartışılıyor."
+     }
+    ],
+    "validated": true,
+    "evidence": [
+     {
+      "claim": "Rakip, takipli danışan başına aylık 249 TL ücret alıyor (10 danışan paketi 2.490 TL)",
+      "url": "https://www.diyetisyenim.app/"
+     },
+     {
+      "claim": "Diyetisyen danışmanlık ücretleri aylık 3.000-8.000 TL arasında",
+      "url": "https://www.habergazetesi.com.tr/diyetisyen-fiyatlari-2025-ne-kadar"
+     },
+     {
+      "claim": "App Store'da çok sayıda diyetisyenin kendi markalı uygulaması var (ör. Uzm. Dyt. Nagehan Afşar, Diyetisyen Büşra Uzuner)",
+      "url": "https://apps.apple.com/tr/app/id6443452225"
+     }
+    ]
+   },
+   {
+    "name": "Diyet ve beslenme klinikleri (birden fazla diyetisyen)",
+    "description": "Birkaç diyetisyenin çalıştığı, kurumsal veya sporcu takibi de yapan klinikler.",
+    "size_estimate": "Doğrulanamadı.",
+    "willingness_to_pay": "yüksek",
+    "wtp_evidence": "Kurumsal ve sporcu takibinde aylık 7.000-8.000 TL ücret alınıyor; rakip 100 ve 200+ danışanlık klinik paketleri sunuyor.",
+    "expectations": [
+     "Çoklu diyetisyen hesabı",
+     "Toplu raporlama",
+     "Kurumsal danışanlar için düzenli rapor"
+    ],
+    "pains": [
+     "Diyetisyenler arası tutarsız takip",
+     "Danışan verisinin dağınık olması"
+    ],
+    "platforms": [
+     {
+      "name": "LinkedIn",
+      "url": "",
+      "note": "Kurumsal beslenme hizmetleri (doğrulanmadı)."
+     }
+    ],
+    "validated": false,
+    "evidence": [
+     {
+      "claim": "Rakip Nutrirelay 100 ve 200+ danışanlık klinik/kurumsal paketler sunuyor",
+      "url": "https://www.diyetisyenim.app/"
+     }
+    ]
+   }
+  ],
+  "excluded_segments": [
+   {
+    "name": "Kendi başına diyet yapan bireyler",
+    "reason": "Ücretsiz kalori uygulamaları (fatsecret, DietLab gibi binlerce değerlendirmeli uygulamalar) ve ChatGPT bu ihtiyacı karşılıyor; para verme isteği düşük ve pazar doymuş."
+   },
+   {
+    "name": "Kamu hastanelerinde çalışan diyetisyenler",
+    "reason": "Satın alma kararı kurumda; küçük ekip için uzun ve zor satış süreci."
+   }
+  ]
+ },
+ "competitors": [
+  {
+   "name": "Nutrirelay (diyetisyenim.app)",
+   "kind": "doğrudan",
+   "platform": "iOS, web",
+   "url": "https://www.diyetisyenim.app/",
+   "pricing": "Takipli danışan başına aylık 199,95-249 TL (10 danışan: 2.490 TL/ay + KDV); 7 gün ücretsiz deneme",
+   "traction": "App Store'da Eylül 2026'da yayınlandı, henüz değerlendirme yok",
+   "strengths": [
+    "Fotoğraftan kalori tahmini aralık ve güven düzeyiyle",
+    "Diyetisyen onay akışı",
+    "AB sunucuları, isim yapay zekaya gönderilmiyor, KVKK metni",
+    "Görüşme notunu menü ve hedefe ayıran yapay zeka asistanı"
+   ],
+   "weaknesses": [
+    "Çok yeni, kullanıcı yorumu yok (zayıf yan doğrulanamadı)",
+    "Danışan başı fiyat çok danışanlı diyetisyen için pahalı olabilir (tahmin)"
+   ],
+   "is_giant": false
+  },
+  {
+   "name": "DiyetisyenimApp",
+   "kind": "doğrudan",
+   "platform": "web",
+   "url": "https://diyetisyenimapp.com/",
+   "pricing": "Fiyat sayfada bulunamadı; arama sonucunda 90 gün ücretsiz deneme",
+   "traction": "Doğrulanamadı",
+   "strengths": [
+    "Randevu, diyet listesi, ölçüm ve danışan yönetimi",
+    "Güçlü SEO anahtar kelimeleri"
+   ],
+   "weaknesses": [
+    "Öğün fotoğrafı analizi görünmüyor (doğrulanamadı)"
+   ],
+   "is_giant": false
+  },
+  {
+   "name": "Fitim",
+   "kind": "doğrudan",
+   "platform": "iOS",
+   "url": "https://apps.apple.com/us/app/fitim-app/id6474455083",
+   "pricing": "Ücretsiz + uygulama içi satın alma",
+   "traction": "Doğrulanamadı",
+   "strengths": [
+    "Diyet planı oluşturma ve danışan takibi"
+   ],
+   "weaknesses": [
+    "Fiyat ve kullanıcı sayısı bilgisi yok"
+   ],
+   "is_giant": false
+  },
+  {
+   "name": "Nutrium",
+   "kind": "dolaylı",
+   "platform": "web, iOS, Android",
+   "url": "https://nutrium.com/pricing",
+   "pricing": "Yıllık ödemede aylık 15-19 $, aylık ödemede 25-49 $",
+   "traction": "Kendini dünyanın 1 numaralı beslenme yazılımı olarak tanıtıyor",
+   "strengths": [
+    "Danışan mobil uygulaması ve yemek günlüğü",
+    "Yapay zeka görüşme özetleri"
+   ],
+   "weaknesses": [
+    "Türkiye'ye özel fiyat ve dil desteği doğrulanamadı"
+   ],
+   "is_giant": false
+  },
+  {
+   "name": "Healthie / Practice Better",
+   "kind": "dolaylı",
+   "platform": "web, mobil",
+   "url": "https://www.reddit.com/r/dietetics/comments/17bxfz6/best_ehr_for_virtual_practice/",
+   "pricing": "Doğrulanamadı",
+   "traction": "r/dietetics'te sık önerilen yazılımlar",
+   "strengths": [
+    "Fotoğraflı yemek günlüğü (Healthie)",
+    "Güvenilir uygulama (Practice Better)"
+   ],
+   "weaknesses": [
+    "Healthie uygulamasının yavaş olduğu söyleniyor",
+    "ABD odaklı"
+   ],
+   "is_giant": false
+  },
+  {
+   "name": "WhatsApp + kendi markalı uygulamalar",
+   "kind": "manuel yöntem",
+   "platform": "WhatsApp, iOS",
+   "url": "https://apps.apple.com/tr/app/id6758719823",
+   "pricing": "WhatsApp ücretsiz; özel uygulama geliştirme maliyeti doğrulanamadı",
+   "traction": "App Store'da en az 5 diyetisyenin kendi uygulaması (en yükseği 38 değerlendirme)",
+   "strengths": [
+    "Danışanlar zaten WhatsApp kullanıyor, kurulum gerekmiyor"
+   ],
+   "weaknesses": [
+    "Fotoğraflar dağınık, otomatik özet yok"
+   ],
+   "is_giant": false
+  }
+ ],
+ "market_position": {
+  "saturation": "yüksek",
+  "giants_present": "Doğrudan bir dev yok; ancak ChatGPT ve tüketici kalori uygulamaları fotoğraftan kalori tahmini yapıyor.",
+  "trend": "Türkiye'de son bir yılda en az iki yeni diyetisyen platformu çıkmış (Nutrirelay Eylül 2026, DiyetisyenimApp). Yapay zekalı öğün analizi Instagram reklamlarında öne çıkan bir özellik. Trend verisi (Google Trends) alınamadı.",
+  "gap": "Rakiplerin henüz kullanıcı yorumu yok; WhatsApp üzerinden, danışana uygulama indirtmeden çalışan bir çözüm bulunamadı.",
+  "why_now": "Görüntü tanıyan yapay zeka modelleri ucuzladı; ancak aynı fırsatı rakipler de yakaladı, bu yüzden zamanlama avantajı yok."
+ },
+ "positioning": {
+  "statement": "Danışanlarını WhatsApp'tan takip eden serbest diyetisyenler için, karmaşık yönetim yazılımlarından farklı olarak, danışana uygulama indirtmeden öğün fotoğraflarını haftalık rapora çeviren takip asistanı.",
+  "category": "Diyetisyen danışan takip asistanı",
+  "competitive_alternatives": [
+   "WhatsApp ile el ile takip",
+   "Nutrirelay, DiyetisyenimApp gibi yerli platformlar",
+   "Nutrium gibi global yazılımlar"
+  ],
+  "unique_attributes": [
+   "Danışan tarafında uygulama gerekmeyen, WhatsApp tabanlı akış (doğrulanmamış fark)",
+   "Haftalık otomatik rapor"
+  ],
+  "value": "Diyetisyenin danışan başına haftalık takip süresini azaltması (ölçülmedi)",
+  "best_fit_customer": "Çoğunlukla online çalışan, 20-60 aktif danışanı olan serbest diyetisyen",
+  "tagline": "Danışan fotoğraf atsın, rapor size gelsin.",
+  "value_equation": {
+   "dream_outcome": {
+    "score": 6,
+    "note": "Diyetisyene haftalık takip süresinden tasarruf ve daha az danışan kaybı vaat ediyor; önemli ama hayati değil."
+   },
+   "likelihood": {
+    "score": 4,
+    "note": "Fotoğraftan kalori tahmini NIH testinde ortalama 250-345 kcal düşük çıktı; zaman tasarrufu henüz ölçülmedi."
+   },
+   "speed": {
+    "score": 7,
+    "note": "İlk haftalık rapor ilk hafta sonunda görülür."
+   },
+   "low_effort": {
+    "score": 8,
+    "note": "Danışan sadece fotoğraf atar; diyetisyen tek dokunuşla onaylar."
+   },
+   "improvement": "En zayıf halka 'ulaşma ihtimali': pilot diyetisyenlerle ölçülmüş zaman tasarrufu, kalori yerine aralık ve güven düzeyi göstermek ve 30 gün para iade garantisi."
+  }
+ },
+ "keywords": {
+  "app_name_ideas": [
+   "Öğün Takip - Diyetisyen Asistanı",
+   "Danışan Takip: Diyetisyen"
+  ],
+  "app_subtitle": "Fotoğraftan haftalık rapor",
+  "aso": [
+   {
+    "keyword": "diyetisyen takip",
+    "language": "tr",
+    "competition": "orta",
+    "relevance": "yüksek",
+    "source": "Google önerisi: 'diyetisyen takip programı', 'diyetisyen takip uygulaması'"
+   },
+   {
+    "keyword": "diyetisyen",
+    "language": "tr",
+    "competition": "orta",
+    "relevance": "orta",
+    "source": "App Store araması: ilk 15'te 1000+ değerlendirmeli 2 uygulama (DietLab, fatsecret)"
+   },
+   {
+    "keyword": "danışan takip",
+    "language": "tr",
+    "competition": "orta",
+    "relevance": "yüksek",
+    "source": "Rakip anahtar kelimeleri (DiyetisyenimApp); rekabet ölçülmedi"
+   },
+   {
+    "keyword": "yemek fotoğrafı kalori",
+    "language": "tr",
+    "competition": "yüksek",
+    "relevance": "orta",
+    "source": "Google önerisi: 'yemek fotoğrafı ile kalori hesaplama'; tüketici uygulamalarıyla çakışır (tahmin)"
+   }
+  ],
+  "seo": [
+   {
+    "keyword": "diyetisyen takip programı",
+    "language": "tr",
+    "intent": "satın alma",
+    "competition": "orta",
+    "content_idea": "Ürün ana sayfası ve özellik karşılaştırması"
+   },
+   {
+    "keyword": "diyetisyen yönetim programı",
+    "language": "tr",
+    "intent": "satın alma",
+    "competition": "orta",
+    "content_idea": "Fiyatlandırma sayfası"
+   },
+   {
+    "keyword": "diyetisyenler randevu programı",
+    "language": "tr",
+    "intent": "satın alma",
+    "competition": "orta",
+    "content_idea": "Randevu özelliği sayfası"
+   },
+   {
+    "keyword": "diyetisyen programı online",
+    "language": "tr",
+    "intent": "karşılaştırma",
+    "competition": "orta",
+    "content_idea": "En iyi diyetisyen programları karşılaştırması"
+   },
+   {
+    "keyword": "ücretsiz diyetisyen programı",
+    "language": "tr",
+    "intent": "karşılaştırma",
+    "competition": "orta",
+    "content_idea": "Ücretsiz deneme sürümü sayfası (ücretsiz arayanların çoğu ödeme yapmayabilir)"
+   },
+   {
+    "keyword": "yemek fotoğrafı ile kalori hesaplama",
+    "language": "tr",
+    "intent": "bilgi",
+    "competition": "yüksek",
+    "content_idea": "Yapay zekanın fotoğraftan kalori tahmini ne kadar doğru? (NIH çalışması üzerine yazı)"
+   }
+  ]
+ },
+ "business": {
+  "pricing_model": "Diyetisyen başına aylık abonelik (danışan sayısına göre kademeli). Danışan tarafı ücretsiz.",
+  "suggested_price": "Aylık 599-1.499 TL kademeli paket (tahmin). Nutrirelay'in 10 danışan için 2.490 TL'sinin altında kalarak küçük diyetisyenleri hedefler.",
+  "cost_per_user_month": "Tahmin: 40 aktif danışan × günde 3 fotoğraf × 30 gün = 3.600 analiz. Fotoğraf başı 0,2-0,5 sent yapay zeka maliyetiyle aylık 7-18 $. Bu, düşük fiyatlı pakette marjı ciddi şekilde düşürür.",
+  "gross_margin": "Tahmin: %40-70, fotoğraf sayısına bağlı. Pakette aylık analiz sınırı konmalı.",
+  "customers_for_target": "Profil yok; aylık 5.000 $ (~170.000 TL) hedefi varsayıldı. Ortalama 1.000 TL/ay ile yaklaşık 170 ödeme yapan diyetisyen gerekir.",
+  "acquisition_cost": "Instagram reklamı ve içerik; rakipler de aynı kanalda olduğu için maliyet doğrulanamadı."
+ },
+ "mvp": {
+  "core_features": [
+   "WhatsApp üzerinden öğün fotoğrafı toplama",
+   "Yapay zeka ile öğün tahmini ve diyetisyen onayı",
+   "Danışan başına haftalık otomatik rapor (PDF/web)",
+   "Basit diyetisyen paneli (danışan listesi, ölçüm)"
+  ],
+  "not_now": [
+   "Diyet listesi oluşturucu",
+   "Randevu sistemi",
+   "Ödeme altyapısı",
+   "Klinik/çoklu kullanıcı",
+   "Kendi markalı mobil uygulama",
+   "Sağlık uygulaması entegrasyonları"
+  ],
+  "tech_suggestion": "Web panel + WhatsApp Business API + görüntü tanıyan yapay zeka API'si; veriler AB veya Türkiye'de.",
+  "build_weeks": "6-10 hafta (1-2 kişi + yapay zeka)"
+ },
+ "risks": [
+  {
+   "type": "pazar",
+   "description": "Nutrirelay aynı ürünü yeni çıkardı; birden fazla yerli platform var.",
+   "severity": "yüksek",
+   "mitigation": "Dar bir segmente odaklanmak veya danışana uygulama indirtmeyen WhatsApp akışıyla ayrışmak."
+  },
+  {
+   "type": "yasal",
+   "description": "Öğün fotoğrafları ve kilo verisi sağlık verisidir. 2024 KVKK değişikliğinden sonra yurt dışına aktarım açık rızayla sadece arızi durumlarda yapılabiliyor.",
+   "severity": "yüksek",
+   "mitigation": "Yapay zeka sağlayıcısıyla standart sözleşme ve KVKK bildirimi, isimsizleştirme, AB veya Türkiye'de veri saklama, hukukçu görüşü."
+  },
+  {
+   "type": "teknik",
+   "description": "NIH çalışmasında fotoğraf tabanlı uygulamalar öğün kalorisini ortalama 250-345 kcal düşük tahmin etti.",
+   "severity": "orta",
+   "mitigation": "Kesin kalori yerine aralık ve güven düzeyi göstermek, diyetisyen onayını zorunlu tutmak."
+  },
+  {
+   "type": "platform",
+   "description": "WhatsApp Business API'nin fiyat ve politika değişiklikleri.",
+   "severity": "orta",
+   "mitigation": "Alternatif olarak web üzerinden fotoğraf yükleme bağlantısı."
+  },
+  {
+   "type": "dev şirketler",
+   "description": "Genel yapay zeka asistanları fotoğraftan kalori tahmini yapıyor.",
+   "severity": "düşük",
+   "mitigation": "Diyetisyen iş akışına (onay, rapor, danışan yönetimi) odaklanmak."
+  }
+ ],
+ "legal_risk": "orta",
+ "validation_plan": {
+  "riskiest_assumption": "Serbest diyetisyenler, mevcut yerli platformlar varken WhatsApp tabanlı yeni bir takip asistanına geçip para öder.",
+  "experiment": {
+   "method": "Mom Test görüşmeleri + ön satışlı tanıtım sayfası",
+   "steps": [
+    "Instagram'da online çalışan 30 serbest diyetisyene ulaşıp 15 görüşme ayarla",
+    "Fikri anlatmadan sor: en son ne zaman danışan fotoğraflarını takip ettiniz, nasıl, ne kadar sürdü, hangi aracı denediniz?",
+    "Tek sayfalık tanıtım sayfası ve 'ilk 3 ay %50 indirim' ön satışı",
+    "Görüşme yapan diyetisyenlere ön satış bağlantısını gönder"
+   ],
+   "budget": "50 $ altı (alan adı + sayfa)",
+   "duration": "2 hafta",
+   "success_criteria": "15 görüşmenin en az 8'inde haftalık fotoğraf takibi yapılıyor ve mevcut yöntemden memnuniyetsizlik var; en az 3 ön ödeme."
+  },
+  "first_100_users": [
+   {
+    "channel": "Instagram DM",
+    "tactic": "Online danışmanlık veren diyetisyenlere kişisel mesajla ücretsiz pilot önermek"
+   },
+   {
+    "channel": "Diyetisyen içerik üreticileri",
+    "tactic": "Takipçisi yüksek 2-3 diyetisyenle gelir paylaşımlı tanıtım"
+   },
+   {
+    "channel": "SEO",
+    "tactic": "'diyetisyen takip programı' ve 'diyetisyen programı online' için karşılaştırma sayfası"
+   }
+  ],
+  "kill_criteria": [
+   "2 hafta içinde 15 görüşmenin 8'inden azında problem doğrulanmazsa bırak",
+   "6 hafta içinde 5 ödeme yapan diyetisyen bulunamazsa bırak veya pivot yap"
+  ]
+ },
+ "pivot_hints": [
+  "Hedef kitleyi daralt: sporcu diyetisyenleri, gebelik veya diyabet gibi tek bir uzmanlık alanı",
+  "Danışan tarafında uygulama gerektirmeyen WhatsApp akışını ana fark olarak öne çıkar",
+  "Türkçe konuşulan diğer pazarlar veya yurt dışındaki Türk diyetisyenler"
+ ],
+ "data_gaps": [
+  "Türkiye'de serbest çalışan diyetisyen sayısı",
+  "Türk diyetisyenlerin bu problemle ilgili kendi sözleri (Ekşi Sözlük, Instagram, Facebook grupları)",
+  "Rakiplerin ödeme yapan müşteri sayıları ve kullanıcı yorumları",
+  "Google Play verisi ve App Store anahtar kelime önerileri",
+  "Google Trends verisi",
+  "DiyetisyenimApp, Fitim ve Fithiz fiyatları"
+ ],
+ "sources": [
+  {
+   "title": "Nutrirelay / diyetisyenim.app fiyat ve özellikler",
+   "url": "https://www.diyetisyenim.app/"
+  },
+  {
+   "title": "DiyetisyenimApp",
+   "url": "https://diyetisyenimapp.com/"
+  },
+  {
+   "title": "Nutrium fiyatlandırma",
+   "url": "https://nutrium.com/pricing"
+  },
+  {
+   "title": "Diyetisyen fiyatları 2025 (Habergazetesi)",
+   "url": "https://www.habergazetesi.com.tr/diyetisyen-fiyatlari-2025-ne-kadar"
+  },
+  {
+   "title": "Beslenme ve diyetetik programlarının durumu 2022-2025 (Hacettepe)",
+   "url": "https://avesis.hacettepe.edu.tr/yayin/2fb128ba-ff3d-4230-be31-2caf13bedb63/beslenme-ve-diyetetik-lisans-programlarinin-mevcut-durumu-2022-yilindan-2025-yilina-neler-degisti"
+  },
+  {
+   "title": "Serbest çalışan diyetisyenler mevzuat kıskacında (İndigo)",
+   "url": "https://indigodergisi.com/2025/07/serbest-calisan-diyetisyenler-mevzuat-kiskacinda/"
+  },
+  {
+   "title": "Fotoğraf tabanlı kalori uygulamaları kaloriyi düşük tahmin ediyor (NIH çalışması)",
+   "url": "https://www.newswise.com/articles/photo-based-calorie-tracking-apps-may-underestimate-energy-in-meals"
+  },
+  {
+   "title": "KVKK'da neler değişti (Erdem & Erdem)",
+   "url": "https://www.erdem-erdem.av.tr/bilgi-bankasi/kisisel-verilerin-korunmasi-kanununda-neler-degisti"
+  },
+  {
+   "title": "r/dietetics: Weight management",
+   "url": "https://www.reddit.com/r/dietetics/comments/1kshh0x/weight_management_how_to_work_with_these_two/"
+  },
+  {
+   "title": "r/dietetics: Best EHR for virtual practice",
+   "url": "https://www.reddit.com/r/dietetics/comments/17bxfz6/best_ehr_for_virtual_practice/"
+  },
+  {
+   "title": "Fitim (App Store)",
+   "url": "https://apps.apple.com/us/app/fitim-app/id6474455083"
+  }
+ ],
+ "ek_grafikler": [
+  {
+   "baslik": "App Store'da \"diyetisyen\" araması: değerlendirme sayıları (Türkiye)",
+   "tur": "bar",
+   "etiketler": [
+    "fatsecret",
+    "Lifie",
+    "DietLab",
+    "Nutria",
+    "HiDoctor",
+    "Uzm. Dyt. Nagehan Afşar",
+    "SmartBites",
+    "E-Diyetisyen",
+    "MELLClub",
+    "Diyetisyenim.app"
+   ],
+   "seriler": [
+    {
+     "ad": "Değerlendirme sayısı",
+     "veri": [
+      10698,
+      16009,
+      8087,
+      770,
+      259,
+      38,
+      25,
+      20,
+      8,
+      0
+     ]
+    }
+   ],
+   "aciklama": "iTunes Search API, ülke: TR, 2026-10-22. Yüksek sayılı olanlar tüketici diyet uygulamaları; diyetisyen odaklı uygulamaların hepsi 40 değerlendirmenin altında.",
+   "kaynak_url": "https://itunes.apple.com/search?term=diyetisyen&country=tr&entity=software&limit=15"
+  }
+ ],
+ "unit_economics": {
+  "para_birimi": "TL",
+  "birim": "ödeme yapan diyetisyen-ay",
+  "fiyat": 999,
+  "degisken": [
+   {
+    "kalem": "Yapay zeka görüntü analizi (40 danışan × günde 3 fotoğraf)",
+    "tutar": 400,
+    "kaynak": "tahmin: ayda ~3.600 fotoğraf, fotoğraf başı ~0,1 TL"
+   },
+   {
+    "kalem": "WhatsApp Business API mesaj ücretleri",
+    "tutar": 100,
+    "kaynak": "tahmin"
+   },
+   {
+    "kalem": "Sunucu ve fotoğraf depolama payı (AB)",
+    "tutar": 50,
+    "kaynak": "tahmin"
+   },
+   {
+    "kalem": "Ödeme altyapısı komisyonu (~%3)",
+    "tutar": 30,
+    "kaynak": "tahmin: yerel ödeme altyapılarının tipik oranı"
+   }
+  ],
+  "sabit_aylik": [
+   {
+    "kalem": "Yazılım araçları ve alan adı",
+    "tutar": 1500,
+    "kaynak": "tahmin"
+   },
+   {
+    "kalem": "Muhasebe",
+    "tutar": 2000,
+    "kaynak": "tahmin"
+   },
+   {
+    "kalem": "KVKK uyumu (VERBİS, sözleşme takibi)",
+    "tutar": 500,
+    "kaynak": "tahmin"
+   }
+  ],
+  "baslangic": [
+   {
+    "kalem": "KVKK ve sağlık verisi hukuk danışmanlığı",
+    "tutar": 25000,
+    "kaynak": "tahmin"
+   },
+   {
+    "kalem": "Tasarım",
+    "tutar": 10000,
+    "kaynak": "tahmin"
+   },
+   {
+    "kalem": "Lansman reklamı (Instagram)",
+    "tutar": 15000,
+    "kaynak": "tahmin"
+   }
+  ],
+  "aylik_rampa": [
+   2,
+   4,
+   7,
+   10,
+   14,
+   18,
+   22,
+   26,
+   30,
+   34,
+   38,
+   42
+  ],
+  "hedef_aylik_kar": 170000,
+  "notlar": "Fiyat, rakip Nutrirelay'in 10 danışanlık paketinin (2.490 TL) altında konumlandırıldı. Tüm maliyetler tahmindir; ilk pilotta gerçek yapay zeka maliyeti ölçülmeli. Hedef kâr, profil olmadığı için aylık ~5.000 $ varsayımıdır."
+ }
 }

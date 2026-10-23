@@ -570,6 +570,87 @@
     "tagline": {
      "type": "string",
      "description": "Kısa slogan"
+    },
+    "value_equation": {
+     "type": "object",
+     "description": "Hormozi değer denklemi (isteğe bağlı). Her biri 0-10, yüksek iyi.",
+     "properties": {
+      "dream_outcome": {
+       "type": "object",
+       "properties": {
+        "score": {
+         "type": "integer"
+        },
+        "note": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "score",
+        "note"
+       ],
+       "description": "Hayal edilen sonucun büyüklüğü"
+      },
+      "likelihood": {
+       "type": "object",
+       "properties": {
+        "score": {
+         "type": "integer"
+        },
+        "note": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "score",
+        "note"
+       ],
+       "description": "Müşterinin sonuca ulaşacağına inanma ihtimali (kanıt, garanti)"
+      },
+      "speed": {
+       "type": "object",
+       "properties": {
+        "score": {
+         "type": "integer"
+        },
+        "note": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "score",
+        "note"
+       ],
+       "description": "Sonuca hızlı ulaşma (10 = çok hızlı)"
+      },
+      "low_effort": {
+       "type": "object",
+       "properties": {
+        "score": {
+         "type": "integer"
+        },
+        "note": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "score",
+        "note"
+       ],
+       "description": "Müşteriden istenen çabanın azlığı (10 = neredeyse hiç çaba)"
+      },
+      "improvement": {
+       "type": "string",
+       "description": "Teklifin en zayıf halkası ve nasıl güçlendirilir"
+      }
+     },
+     "required": [
+      "dream_outcome",
+      "likelihood",
+      "speed",
+      "low_effort",
+      "improvement"
+     ]
     }
    },
    "required": [
@@ -1040,6 +1121,116 @@
      "baslik"
     ]
    }
+  },
+  "unit_economics": {
+   "type": "object",
+   "description": "Birim ekonomisi girdileri (isteğe bağlı ama önerilir). Hesabı scripts/rapor.py veya şablon yapar.",
+   "properties": {
+    "para_birimi": {
+     "type": "string",
+     "description": "TL, $ vb."
+    },
+    "birim": {
+     "type": "string",
+     "description": "Bir satış birimi, ör. 'ödeme yapan diyetisyen-ay'"
+    },
+    "fiyat": {
+     "type": "number",
+     "description": "Birim başına aylık fiyat (vergi hariç, mağaza komisyonu ÖNCESİ)"
+    },
+    "degisken": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "kalem": {
+        "type": "string"
+       },
+       "tutar": {
+        "type": "number"
+       },
+       "kaynak": {
+        "type": "string",
+        "description": "Link veya 'tahmin: gerekçe'"
+       }
+      },
+      "required": [
+       "kalem",
+       "tutar"
+      ]
+     },
+     "description": "Bir birimin aylık değişken maliyetleri: yapay zeka API, sunucu payı, mağaza/ödeme komisyonu"
+    },
+    "sabit_aylik": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "kalem": {
+        "type": "string"
+       },
+       "tutar": {
+        "type": "number"
+       },
+       "kaynak": {
+        "type": "string",
+        "description": "Link veya 'tahmin: gerekçe'"
+       }
+      },
+      "required": [
+       "kalem",
+       "tutar"
+      ]
+     },
+     "description": "Satıştan bağımsız aylık giderler: araçlar, alan adı, muhasebe, kurucu maaşı (varsa)"
+    },
+    "baslangic": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "kalem": {
+        "type": "string"
+       },
+       "tutar": {
+        "type": "number"
+       },
+       "kaynak": {
+        "type": "string",
+        "description": "Link veya 'tahmin: gerekçe'"
+       }
+      },
+      "required": [
+       "kalem",
+       "tutar"
+      ]
+     },
+     "description": "Bir kerelik başlangıç harcamaları: geliştirme, tasarım, hukuk, lansman reklamı"
+    },
+    "aylik_rampa": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     },
+     "description": "İlk 12 ayın her birinde gerçekçi ödeme yapan müşteri sayısı"
+    },
+    "hedef_aylik_kar": {
+     "type": "number",
+     "description": "Kurucunun aylık kâr/gelir hedefi (profilden)"
+    },
+    "notlar": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "para_birimi",
+    "birim",
+    "fiyat",
+    "degisken",
+    "sabit_aylik",
+    "baslangic",
+    "aylik_rampa"
+   ]
   }
  },
  "required": [

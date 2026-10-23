@@ -31,7 +31,7 @@ Kullanıcının isteğine göre doğru adımdan başla. Her adımın başında n
 | Belirli bir fikri var, "doğrula" | **2. Doğrulama** | [references/dogrulama.md](references/dogrulama.md) |
 | Puan düşük, "pivot", "yeniden konumlandır" | **3. Pivot** | [references/pivot.md](references/pivot.md) |
 
-Adımlar birbirine bağlanır. Keşif bittiğinde en iyi 1-3 adayı doğrulamayı öner. Doğrulama "zayıf" çıkarsa pivotu öner. Pivot seçeneklerinden biri seçilirse onu doğrula.
+Adımlar birbirine bağlanır. Keşif bittiğinde en iyi 1-3 adayı doğrulamayı öner. Doğrulama "zayıf" çıkarsa pivotu öner. Pivot seçeneklerinden biri seçilirse onu doğrula. Doğrulama 55 ve üzeri çıkarsa ve founder-skill kuruluysa, işe dönüştürme adımlarını öner (bkz. [references/dogrulama.md](references/dogrulama.md), "Sonraki aşama").
 
 İlgili rehberi o adıma geçmeden önce **tamamen** oku. Bütün rehberleri baştan okuma.
 
@@ -59,6 +59,7 @@ Hangi araçların elinde olduğunu kontrol et ve **kullanılabilen en güçlü v
   - `last30days` skill'i: son 30 günün Reddit, X, YouTube, TikTok ve Hacker News tartışmaları, oy ve beğeni sayılarıyla.
   - `agent-reach`: Reddit, YouTube altyazısı, X ve LinkedIn gibi platformlara erişim.
   - RivalSearch MCP (`social_search`, `news_aggregation`, `research_topic`) ve Trends MCP (`get_growth`, `get_time_series`, `get_top_trends`).
+  - `founder-skill` paketi (`founder-board`, `founder-offer`, `founder-cfo`, `founder-brand`, `founder-launch` vb.): doğrulanmış fikri işe dönüştürmek için, doğrulamadan **sonra**. İçindeki sanal alıcı paneli (`founder-consumer`) gerçek veri değildir; kanıt olarak kullanma.
 
 Hangi kaynakları kullandığını raporun `meta.kullanilan_kaynaklar` alanına, ortamın yapamadığı şeyleri `meta.sinirlamalar` alanına yaz.
 
@@ -86,4 +87,5 @@ Bu skill şu açık kaynak (MIT) çalışmalardan uyarlanmıştır. Ayrıntılar
 - phuryn/pm-skills
 - msitarzewski/agency-agents
 - mvanhorn/last30days-skill
+- Jakeschincariol/founder-skill
 - Panniantong/Agent-Reach
