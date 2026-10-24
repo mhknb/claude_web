@@ -1,0 +1,513 @@
+{
+ "type": "object",
+ "properties": {
+  "tur": {
+   "type": "string",
+   "const": "kesif"
+  },
+  "meta": {
+   "type": "object",
+   "properties": {
+    "baslik": {
+     "type": "string"
+    },
+    "tarih": {
+     "type": "string",
+     "description": "YYYY-AA-GG"
+    },
+    "pazar": {
+     "type": "string",
+     "enum": [
+      "Türkçe",
+      "İngilizce",
+      "İkisi"
+     ]
+    },
+    "kullanilan_kaynaklar": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "sinirlamalar": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "baslik",
+    "tarih"
+   ],
+   "additionalProperties": false,
+   "description": "Rapor bilgileri"
+  },
+  "market_notes": {
+   "type": "string",
+   "description": "Alan ve güncel pazar durumu hakkında 3-5 cümle"
+  },
+  "excluded_niches": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "niche": {
+      "type": "string"
+     },
+     "reason": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "niche",
+     "reason"
+    ],
+    "additionalProperties": false
+   },
+   "description": "Elenen nişler ve nedeni (doymuş, talep yok, yapay zeka bedava veriyor vb.)"
+  },
+  "candidates": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "niche": {
+      "type": "string",
+      "description": "Niş, dar ve net"
+     },
+     "working_title": {
+      "type": "string",
+      "description": "Çalışma başlığı"
+     },
+     "subtitle": {
+      "type": "string",
+      "description": "Alt başlık"
+     },
+     "book_type": {
+      "type": "string",
+      "enum": [
+       "rehber",
+       "el kitabı",
+       "çalışma kitabı",
+       "başvuru kitabı",
+       "sınav hazırlık",
+       "vaka ve deneyim",
+       "diğer"
+      ],
+      "description": "Kitap türü"
+     },
+     "language": {
+      "type": "string",
+      "enum": [
+       "tr",
+       "en"
+      ]
+     },
+     "platform": {
+      "type": "string",
+      "description": "Ana satış kanalı, ör. Amazon KDP, Kitapyurdu, Google Play Kitaplar"
+     },
+     "target_reader": {
+      "type": "string",
+      "description": "Okur kim, dar tanım"
+     },
+     "reader_problem": {
+      "type": "string",
+      "description": "Okurun çözmek istediği sorun, kendi diliyle"
+     },
+     "why_buy": {
+      "type": "string",
+      "description": "Bu okurun bu konuda kitap/kaynak satın aldığına dair kanıt"
+     },
+     "competition_snapshot": {
+      "type": "string",
+      "description": "İlk sonuçlardaki kitapların durumu: yorum sayıları, yayın yılları, fiyatlar"
+     },
+     "gap": {
+      "type": "string",
+      "description": "Mevcut kitapların bıraktığı boşluk (okur şikâyetleri)"
+     },
+     "evidence": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "claim": {
+         "type": "string"
+        },
+        "url": {
+         "type": "string",
+         "description": "Kaynak linki"
+        }
+       },
+       "required": [
+        "claim",
+        "url"
+       ],
+       "additionalProperties": false
+      },
+      "description": "En az 3 kaynaklı kanıt"
+     },
+     "scores": {
+      "type": "object",
+      "properties": {
+       "demand": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Talep: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "competition_gap": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Rekabet boşluğu: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "ai_resilience": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Yapay zekaya dayanıklılık: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "author_fit": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Yazar uyumu ve güvenilirlik: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "earning": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Kazanç gücü: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "evergreen": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Kalıcılık: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       },
+       "reachability": {
+        "type": "object",
+        "properties": {
+         "score": {
+          "type": "integer",
+          "description": "Okura ulaşılabilirlik: 0-10"
+         },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Kanıtın gücü; kanıt yoksa 'düşük'"
+         },
+         "reason": {
+          "type": "string",
+          "description": "Kanıta dayalı gerekçe, 1-2 cümle"
+         }
+        },
+        "required": [
+         "score",
+         "confidence",
+         "reason"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "required": [
+       "demand",
+       "competition_gap",
+       "ai_resilience",
+       "author_fit",
+       "earning",
+       "evergreen",
+       "reachability"
+      ],
+      "additionalProperties": false,
+      "description": "Her biri 0-10, yüksek iyi"
+     },
+     "ymyl": {
+      "type": "boolean",
+      "description": "Sağlık, hukuk, finans gibi okurun hayatını/parasını etkileyen bir konu mu"
+     },
+     "policy_risk": {
+      "type": "string",
+      "enum": [
+       "düşük",
+       "orta",
+       "yüksek"
+      ],
+      "description": "Yayın politikası/yasal risk"
+     },
+     "main_risk": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "niche",
+     "working_title",
+     "subtitle",
+     "book_type",
+     "language",
+     "platform",
+     "target_reader",
+     "reader_problem",
+     "why_buy",
+     "competition_snapshot",
+     "gap",
+     "evidence",
+     "scores",
+     "ymyl",
+     "policy_risk",
+     "main_risk"
+    ],
+    "additionalProperties": false
+   },
+   "description": "Aday kitap nişleri"
+  },
+  "ek_grafikler": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "baslik": {
+      "type": "string"
+     },
+     "tur": {
+      "type": "string",
+      "enum": [
+       "bar",
+       "line",
+       "pie",
+       "doughnut",
+       "radar",
+       "scatter"
+      ]
+     },
+     "etiketler": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "seriler": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "ad": {
+         "type": "string"
+        },
+        "veri": {
+         "type": "array"
+        }
+       },
+       "required": [
+        "ad",
+        "veri"
+       ]
+      }
+     },
+     "aciklama": {
+      "type": "string"
+     },
+     "kaynak_url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "baslik",
+     "tur",
+     "seriler"
+    ]
+   },
+   "description": "İsteğe bağlı ek grafikler, sadece gerçek veriyle"
+  },
+  "ek_bolumler": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "baslik": {
+      "type": "string"
+     },
+     "metin": {
+      "type": "string"
+     },
+     "tablo": {
+      "type": "object",
+      "properties": {
+       "basliklar": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "satirlar": {
+        "type": "array",
+        "items": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        }
+       }
+      },
+      "required": [
+       "basliklar",
+       "satirlar"
+      ]
+     }
+    },
+    "required": [
+     "baslik"
+    ]
+   },
+   "description": "İsteğe bağlı ek bölümler (HTML yok)"
+  }
+ },
+ "required": [
+  "tur",
+  "meta",
+  "market_notes",
+  "excluded_niches",
+  "candidates"
+ ],
+ "additionalProperties": false,
+ "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

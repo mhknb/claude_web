@@ -28,30 +28,37 @@
  "scores": {
   "pain": {
    "score": 5,
+   "confidence": "orta",
    "reason": "Diyetisyenlerin porsiyonu görmek için danışanlardan öğün fotoğrafı istediği kanıtlı (r/dietetics) ve bu ihtiyaç için birçok platform kurulmuş; ancak Türk diyetisyenlerin bu işi acı verici bulduğuna dair doğrudan alıntı toplanamadı."
   },
   "willingness_to_pay": {
    "score": 6,
+   "confidence": "orta",
    "reason": "Nutrirelay takipli danışan başına aylık 249 TL alıyor, Nutrium aylık 19-49 $; birçok diyetisyen kendi markalı uygulamasını yaptırmış. Rakiplerin ödeme yapan müşteri sayısı doğrulanamadı."
   },
   "market_room": {
    "score": 3,
+   "confidence": "yüksek",
    "reason": "Türkiye'de aynı fikri yapan Nutrirelay ve benzer özellikli DiyetisyenimApp, Fitim, Fithiz gibi platformlar var; globalde Nutrium, Healthie ve Practice Better fotoğraflı yemek günlüğü sunuyor."
   },
   "reachability": {
    "score": 6,
+   "confidence": "orta",
    "reason": "Diyetisyenler Instagram'da aktif ve kendilerini orada pazarlıyor; 'diyetisyen takip programı' ve 'diyetisyen yönetim programı' gibi aramalar Google önerilerinde çıkıyor. Ancak rakipler de aynı kanalları kullanıyor."
   },
   "giant_safety": {
    "score": 6,
+   "confidence": "orta",
    "reason": "ChatGPT ve tüketici kalori uygulamaları (fatsecret vb.) fotoğraftan kalori tahmini yapıyor; ama diyetisyen paneli, onay akışı ve danışan yönetimi nişe özel bir iş akışı."
   },
   "buildability": {
    "score": 6,
+   "confidence": "orta",
    "reason": "Hazır yapay zeka servisleriyle 2-3 ayda ilk sürüm çıkar; ancak KVKK sağlık verisi gereklilikleri ve fotoğraftan kalori tahmininin düşük doğruluğu ek iş ve dikkat gerektirir."
   },
   "founder_fit": {
    "score": 5,
+   "confidence": "düşük",
    "reason": "Profil bilgisi yok (test çalışması)."
   }
  },

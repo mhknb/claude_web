@@ -35,7 +35,7 @@ Her seçenek için hızlı bir doğrulama yap. Doğrulama rehberinin tamamını 
 - Trend var mı?
 - Hangi zayıflığı nasıl düzeltiyor? (`why_better`)
 
-Her seçeneğe en az 2 kaynaklı kanıt ekle. [puanlama.md](puanlama.md) ile 7 bileşeni puanla. Çaba düzeyini (düşük/orta/yüksek) kurucu profiline göre belirle.
+Her seçeneğe en az 2 kaynaklı kanıt ekle. [puanlama.md](puanlama.md) ile 7 bileşeni puanla ve güven düzeylerini yaz. Çaba düzeyini (düşük/orta/yüksek) kurucu profiline göre belirle.
 
 ### 4. Öneri → `recommendation`
 Hangisini önerdiğini ve nedenini yaz. Hiçbir seçenek mevcut fikirden belirgin şekilde daha iyi değilse bunu açıkça söyle.

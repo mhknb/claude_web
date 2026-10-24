@@ -115,7 +115,7 @@ phuryn/pm-skills ve MaxKmet "en riskli varsayım testi" yaklaşımı:
 Görüşme önerirken Mom Test kurallarını hatırlat: Fikri anlatma; geçmiş davranışı sor ("En son ne zaman ... yaşadınız? Nasıl çözdünüz? Ne kadar harcadınız?"). Gelecekle ilgili "kullanır mıydınız?" sorularına verilen yanıtlar kanıt sayılmaz.
 
 ### 11. Puan ve özet → `scores`, `summary`
-[puanlama.md](puanlama.md) basamaklarına göre puanla ve oradaki gerçeklik kontrolünü uygula. `summary.verdict_reason` içinde kararın gerekçesini 3-4 cümleyle yaz. `biggest_risk` tek bir cümle olsun. `next_action` somut bir adım olsun (ör. "Bu hafta r/dietetics'te 10 kişiyle Mom Test görüşmesi").
+[puanlama.md](puanlama.md) basamaklarına göre puanla, her puanın **güven düzeyini** yaz ve oradaki gerçeklik kontrolünü uygula. Karar "Belirsiz" çıkarsa, test planını güveni düşük bileşenleri ölçecek şekilde kur ve özette bunu açıkça söyle. `summary.verdict_reason` içinde kararın gerekçesini 3-4 cümleyle yaz. `biggest_risk` tek bir cümle olsun. `next_action` somut bir adım olsun (ör. "Bu hafta r/dietetics'te 10 kişiyle Mom Test görüşmesi").
 
 `pivot_hints`: Puan 55'in altındaysa hangi 1-2 değişkenin değişmesi işe yarayabilir?
 `data_gaps`: Doğrulayamadığın her şey.

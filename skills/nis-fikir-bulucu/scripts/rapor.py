@@ -32,29 +32,44 @@ COMPONENTS = [
 VERDICTS = [(75, "strong", "Güçlü: devam edin"), (55, "promising", "Umut verici: önce test edin"), (35, "weak", "Zayıf: pivot düşünün"), (0, "drop", "Bırakın")]
 
 
+CORE = ("pain", "willingness_to_pay", "market_room", "reachability")
+LABELS = {k: l for k, l, _ in COMPONENTS}
+
+
 def score_idea(scores, legal_risk):
+    """Ağırlıklı toplam + kapılar. Kapılar sadece güveni orta/yüksek bileşenlerde uygulanır.
+    Temel bileşenlerde güven düşükse karar 'Belirsiz' olur (bilinmeyen ile kötü ayrışsın diye)."""
     def s(k):
         try:
             return max(0.0, min(10.0, float((scores or {}).get(k, {}).get("score", 0))))
         except (TypeError, ValueError):
             return 0.0
 
-    raw = round(sum(s(k) / 10 * w for k, _, w in COMPONENTS), 1)
+    def low(k):
+        return ((scores or {}).get(k, {}) or {}).get("confidence") == "düşük"
+
+    raw = jround(sum(s(k) / 10 * w for k, _, w in COMPONENTS), 1)
     caps = []
-    if s("willingness_to_pay") <= 3:
+    if s("willingness_to_pay") <= 3 and not low("willingness_to_pay"):
         caps.append((54, "Para verme isteğine dair kanıt çok zayıf"))
-    if s("pain") <= 3:
+    if s("pain") <= 3 and not low("pain"):
         caps.append((54, "Problem yeterince acı vermiyor"))
-    if s("buildability") <= 3:
+    if s("buildability") <= 3 and not low("buildability"):
         caps.append((54, "Küçük bir ekiple yapılması çok zor"))
     if legal_risk == "yüksek":
         caps.append((54, "Yasal risk yüksek"))
-    if any(s(k) <= 1 for k, _, _ in COMPONENTS):
+    if any(s(k) <= 1 and not low(k) for k, _, _ in COMPONENTS):
         caps.append((34, "En az bir bileşende ölümcül zayıflık var"))
     cap = min([c for c, _ in caps], default=100)
     total = min(raw, cap)
     v = next(v for v in VERDICTS if total >= v[0])
-    return {"raw": raw, "total": total, "capped": total < raw, "caps": [{"cap": c, "reason": r} for c, r in caps], "verdict": v[1], "verdict_label": v[2]}
+    low_conf = [LABELS[k] for k, _, _ in COMPONENTS if low(k)]
+    uncertain = low("willingness_to_pay") or sum(low(k) for k in CORE) >= 2
+    out = {"raw": raw, "total": total, "capped": total < raw, "caps": [{"cap": c, "reason": r} for c, r in caps],
+           "verdict": v[1], "verdict_label": v[2], "low_confidence": low_conf}
+    if uncertain:
+        out.update({"likely_verdict_label": v[2], "verdict": "uncertain", "verdict_label": "Belirsiz: önce test edin"})
+    return out
 
 
 def default_for(schema):
@@ -135,6 +150,13 @@ def conform(schema, value, path, errors):
     return value
 
 
+def jround(x, nd=0):
+    """Tarayıcıdaki Math.round ile aynı yuvarlama (yarımlar yukarı); iki hesap birebir aynı sonucu versin diye."""
+    f = 10 ** nd
+    v = math.floor(x * f + 0.5) / f
+    return int(v) if nd == 0 else v
+
+
 def _total(items):
     t = 0.0
     for it in items or []:
@@ -158,8 +180,8 @@ def _year(price, var, fixed, startup, ramp):
         low = min(low, cum)
         if payback is None and cum >= 0:
             payback = i + 1
-        rows.append({"ay": i + 1, "musteri": n, "gelir": round(revenue), "maliyet": round(cost), "kar": round(profit), "kumulatif": round(cum)})
-    return rows, sum(r["kar"] for r in rows), round(-low) if low < 0 else 0, payback
+        rows.append({"ay": i + 1, "musteri": n, "gelir": jround(revenue), "maliyet": jround(cost), "kar": jround(profit), "kumulatif": jround(cum)})
+    return rows, sum(r["kar"] for r in rows), jround(-low) if low < 0 else 0, payback
 
 
 def unit_economics(ue):
@@ -172,23 +194,23 @@ def unit_economics(ue):
     ramp += [ramp[-1] if ramp else 0] * (12 - len(ramp))
     contribution = price - var
     out = {
-        "katki_payi": round(contribution, 2),
-        "katki_marji_yuzde": round(contribution / price * 100, 1) if price else 0,
-        "degisken_toplam": round(var, 2),
-        "sabit_toplam": round(fixed, 2),
-        "baslangic_toplam": round(startup, 2),
+        "katki_payi": jround(contribution, 2),
+        "katki_marji_yuzde": jround(contribution / price * 100, 1) if price else 0,
+        "degisken_toplam": jround(var, 2),
+        "sabit_toplam": jround(fixed, 2),
+        "baslangic_toplam": jround(startup, 2),
         "uyarilar": [],
     }
     out["basa_bas_musteri"] = math.ceil(fixed / contribution) if contribution > 0 else None
     if ue.get("hedef_aylik_kar") and contribution > 0:
         out["hedef_icin_musteri"] = math.ceil((fixed + float(ue["hedef_aylik_kar"])) / contribution)
     rows, profit, cash, payback = _year(price, var, fixed, startup, ramp)
-    out.update({"aylar": rows, "yil1_kar": round(profit), "gereken_nakit": cash, "geri_odeme_ayi": payback})
+    out.update({"aylar": rows, "yil1_kar": jround(profit), "gereken_nakit": cash, "geri_odeme_ayi": payback})
 
     def scenario(name, p=price, v=var, f=fixed, k=1.0):
         c = p - v
         _, pr, ca, pb = _year(p, v, f, startup, [x * k for x in ramp])
-        return {"senaryo": name, "katki_payi": round(c, 2), "basa_bas_musteri": math.ceil(f / c) if c > 0 else None, "yil1_kar": round(pr), "gereken_nakit": ca, "geri_odeme_ayi": pb}
+        return {"senaryo": name, "katki_payi": jround(c, 2), "basa_bas_musteri": math.ceil(f / c) if c > 0 else None, "yil1_kar": jround(pr), "gereken_nakit": ca, "geri_odeme_ayi": pb}
 
     out["senaryolar"] = [
         scenario("Plan"),

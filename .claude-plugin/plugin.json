@@ -1,7 +1,9 @@
 {
   "name": "nis-fikir-bulucu",
-  "version": "1.0.0",
-  "description": "Gerçek verilerle kârlı niş ürün fikri bulma, doğrulama ve yeniden konumlandırma; grafikli HTML rapor üretir.",
-  "author": { "name": "mhknb" },
+  "version": "1.1.0",
+  "description": "Gerçek verilerle kârlı niş ürün fikri ve satılabilir niş kitap başlığı bulma, doğrulama ve yeniden konumlandırma; grafikli HTML rapor üretir.",
+  "author": {
+    "name": "mhknb"
+  },
   "repository": "https://github.com/mhknb/claude_web"
 }

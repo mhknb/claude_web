@@ -20,7 +20,18 @@ Toplam = Σ (puan / 10 × ağırlık), 0-100 arası.
 
 ## Puan basamakları
 
-Bir basamağa çıkmak için o basamaktaki kanıtın **bulunmuş** olması gerekir. Emin değilsen düşük olanı seç.
+## Puan ve güven ayrı şeylerdir
+
+Her bileşen için iki şey ver:
+- **`score` (0-10):** Bulduğun bilgilere göre **en olası** durum.
+- **`confidence` (düşük / orta / yüksek):** Bu puanın dayandığı kanıtın gücü.
+  - **yüksek:** Birden fazla bağımsız, kaynaklı ve doğrudan kanıt var (ör. gerçek fiyatlar ve müşteri yorumları).
+  - **orta:** En az bir doğrudan kaynaklı kanıt var ya da güçlü dolaylı kanıtlar var.
+  - **düşük:** Doğrudan kanıt bulunamadı; puan akıl yürütmeye veya benzer pazarlara dayanıyor.
+
+**"Bilmiyorum" ile "kötü" aynı şey değildir.** Kanıt bulamadığında puanı otomatik olarak düşürme. En olası puanı ver ve güveni "düşük" işaretle. Bir bileşene düşük puan vermek için **zayıflığın kanıtı** gerekir (ör. "kitle ödeme yapmıyor" diyen kaynaklar, çok güçlü rakipler). Kod, güveni düşük olan bileşenlerde puan sınırlayıcı kapıları uygulamaz ve gerekirse kararı "Belirsiz" yapar.
+
+7 ve üstü bir puan için o basamaktaki kanıtın gerçekten **bulunmuş** olması gerekir. Kanıt yoksa ve yine de 7+ olası görünüyorsa, en fazla 6 ver ve güveni "düşük" işaretle.
 
 ### pain: Problemin acısı ve sıklığı
 - **0-2:** Problem anlatılıyor ama kimse şikâyet etmiyor; kanıt yok.
@@ -37,12 +48,15 @@ Bir basamağa çıkmak için o basamaktaki kanıtın **bulunmuş** olması gerek
 - **7-8:** Kitle bugün eksik çözümlere düzenli ödeme yapıyor (abonelik, danışman, ajans, ücretli araç). Rakipler ayda 10 $ ve üzeri alıyor ve kullanıcısı var.
 - **9-10:** İşletme bütçesinden ödeniyor veya doğrudan gelir ya da tasarruf getiriyor. Yüksek fiyatlı rakipler bile tercih ediliyor.
 
-### market_room: Pazarda yer var mı
-- **0-2:** Anahtar kelimede çok sayıda güçlü uygulama var (ilk 10'da çoğu 10 bin+ değerlendirme). Fark yaratmak çok zor.
-- **3-4:** Birkaç güçlü oyuncu var, boşluklar küçük.
-- **5-6:** Rakipler var ama şikâyetler net bir boşluk gösteriyor (ör. ilk 10'da 1-3 güçlü uygulama, gerisi zayıf veya eski).
-- **7-8:** Rakipler zayıf, eski veya genel amaçlı; bu niş için özel bir çözüm yok.
-- **9-10:** Neredeyse hiç özel çözüm yok ama talep kanıtlı. Talep kanıtı yoksa 9-10 verme; bu genellikle "pazar yok" demektir.
+### market_room: Pazarda yer var mı (boşluğun büyüklüğü)
+Bu bileşen **rakip sayısını değil, rakiplerin bıraktığı boşluğu** ölçer. Para kazanan rakiplerin varlığı kötü değildir; talebin kanıtıdır ve `willingness_to_pay` puanını destekler. Burada sorulan şey: Yeni bir oyuncunun tutunabileceği net bir boşluk var mı?
+- **0-2:** Güçlü, sevilen ve hızla gelişen rakipler var; kullanıcı şikâyetleri az ve dağınık. Fark yaratacak somut bir açı yok.
+- **3-4:** Rakipler iyi iş çıkarıyor; boşluk sadece fiyat (daha ucuz olmak) veya küçük özelliklerden ibaret.
+- **5-6:** Rakipler var ama tekrar eden şikâyet temaları belirgin bir boşluk gösteriyor (ör. Türkçe yok, belirli bir meslek için uygun değil, karmaşık, pahalı).
+- **7-8:** Rakipler genel amaçlı, eski veya bu kitleye kötü hizmet veriyor. Bu kitle için yapılmış iyi bir çözüm yok ve bunu gösteren şikâyetler var.
+- **9-10:** Talep kanıtlı (insanlar el yordamıyla çözüyor veya eksik ürünlere ödüyor) ama bu kitleye özel ciddi bir çözüm hiç yok.
+
+"Hiç rakip yok" tek başına 9-10 için yeterli değildir. Talep kanıtı yoksa bu genellikle pazarın olmadığını gösterir; puanı en fazla 5 ver ve güveni "düşük" işaretle.
 
 ### reachability: Kitleye ucuza ulaşılabilir mi
 - **0-2:** Kitlenin toplandığı belirli bir yer yok; sadece pahalı reklamla ulaşılır.
@@ -72,7 +86,7 @@ Bir basamağa çıkmak için o basamaktaki kanıtın **bulunmuş** olması gerek
 - **7-8:** Becerileri uygun ve alanı tanıyor ya da kitleye erişimi var.
 - **9-10:** Kurucu bu kitlenin bir parçası, alanın uzmanı ve dağıtım avantajı var.
 
-Profil yoksa `founder_fit` puanını 5 ver ve gerekçeye "profil bilgisi yok" yaz.
+Profil yoksa `founder_fit` puanını 5 ver, güveni "düşük" işaretle ve gerekçeye "profil bilgisi yok" yaz.
 
 ### İkinci bakış: Hormozi pazar ölçütleri ve Thiel tekel testi
 
@@ -83,7 +97,7 @@ founder-skill/founder-board'un özetlediği iki yayımlanmış çerçeve, puanla
 
 ## Kapılar (puanı sınırlayan durumlar)
 
-Bunlar toplamı otomatik olarak sınırlar. İyi bir bileşen, ölümcül bir zayıflığı telafi edemez.
+Bunlar toplamı otomatik olarak sınırlar. İyi bir bileşen, ölümcül bir zayıflığı telafi edemez. Kapılar sadece güveni **orta veya yüksek** olan bileşenlerde uygulanır; güveni düşük bir bileşenin düşük puanı "zayıflık kanıtlandı" anlamına gelmez.
 
 | Durum | Toplam en fazla |
 |---|---|
@@ -101,6 +115,9 @@ Bunlar toplamı otomatik olarak sınırlar. İyi bir bileşen, ölümcül bir za
 | 55-74 | Umut verici: önce test edin |
 | 35-54 | Zayıf: pivot düşünün |
 | 35'in altı | Bırakın |
+| (güven düşükse) | **Belirsiz: önce test edin** |
+
+**Belirsiz kararı:** `willingness_to_pay` güveni düşükse **veya** şu dört temel bileşenden en az ikisinin güveni düşükse karar "Belirsiz" olur: `pain`, `willingness_to_pay`, `market_room`, `reachability`. Rapor yine toplam puanı ve "olası kararı" gösterir. Ancak asıl mesaj şudur: Bu fikir masa başında karara bağlanamaz; test planındaki deney yapılmalıdır. Bu durumda test planını güveni düşük bileşenleri ölçecek şekilde tasarla.
 
 ## Gerçeklik kontrolü (puanı vermeden önce)
 
@@ -108,6 +125,8 @@ Rapor verisini kaydetmeden önce kendine şunları sor (agency-agents "Reality C
 
 - 7 veya üstü verdiğin her bileşen için gerekçede **kaynaklı** bir kanıt var mı? Yoksa puanı düşür.
 - Toplam 80'in üzerinde mi çıkacak? Bu nadirdir. Kanıtları tekrar gözden geçir.
+- Tersi de geçerli: Bir bileşene düşük puan veriyorsan, zayıflığın **kanıtı** var mı, yoksa sadece kanıt mı bulamadın? İkincisiyse puanı en olası değere çek ve güveni "düşük" yap.
+- Her fikir 45-60 arasına mı düşüyor? Bu, puanların kanıta değil alışkanlığa göre verildiğinin işaretidir. Gerçekten güçlü kanıt bulduğun bileşenlerde 8-9, gerçekten zayıf olanlarda 2-3 vermekten çekinme.
 - `willingness_to_pay` gerekçesi bir **ödeme davranışına** mı dayanıyor, yoksa bir görüşe mi?
 - "Pazarda hiç rakip yok" diyorsan: talep kanıtı var mı? Rakip yokluğu çoğu zaman talep yokluğudur.
 - Profil yoksa `founder_fit` 5 mi?

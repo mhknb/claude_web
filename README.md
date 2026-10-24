@@ -1,8 +1,17 @@
-# Niş Fikir Bulucu (AI agent skill)
+# Niş Fikir Bulucu ve Kitap Nişi Bulucu (AI agent skill'leri)
 
-Gerçek verilere bakarak küçük bir ekibin (1-2 kişi + yapay zeka) yapıp satabileceği **kârlı niş ürün fikirleri** bulan, bu fikirleri **doğrulayan** ve gerekirse **yeniden konumlandıran** bir yapay zeka skill'i. Sonucu tablolu ve grafikli bir **HTML rapor** olarak verir.
+Bu repoda iki skill var. İkisi de gerçek verilere bakar, sonucu tablolu ve grafikli bir **HTML rapor** olarak verir ve skill'i çalıştıran yapay zekayla (Claude, Claude Code, ChatGPT/Codex, Gemini, Hermes vb.) çalışır. **Ayrı bir API anahtarı gerekmez.**
 
-Skill'i kullandığınız yapay zeka (Claude, Claude Code, ChatGPT/Codex, Gemini, Hermes vb.) çalıştırır. **Ayrı bir API anahtarı gerekmez.** Düşünme ve web aramasını o yapay zekanın kendisi yapar.
+| Skill | Ne bulur |
+|---|---|
+| [`nis-fikir-bulucu`](skills/nis-fikir-bulucu) | Küçük bir ekibin (1-2 kişi + yapay zeka) yapıp satabileceği **kârlı niş ürün fikirleri** (mobil uygulama, SaaS, yapay zeka aracı); doğrulama ve yeniden konumlandırma |
+| [`kitap-nisi-bulucu`](skills/kitap-nisi-bulucu) | Satılabilir, **niş ve spesifik bilgi/rehber kitap başlıkları** (Türkçe veya İngilizce; Amazon KDP, Kitapyurdu, D&R, Google Play Kitaplar); doğrulama, başlık ve anahtar kelime önerileri, kitap başı kazanç |
+
+İki skill de puanı kodla hesaplar. Her puanın yanında bir **güven düzeyi** vardır: kanıt zayıfsa karar "Zayıf" değil **"Belirsiz: önce test edin"** olur. Böylece "bilmiyoruz" ile "kötü" birbirine karışmaz.
+
+---
+
+# Niş Fikir Bulucu
 
 ## Ne yapar?
 
@@ -43,7 +52,41 @@ Puanı yapay zeka değil kod hesaplar. Para verme isteği veya problemin acısı
 
 **En iyi sonuç:** Claude Code (veya benzeri, kod çalıştırabilen bir araç) + last30days + RivalSearch MCP.
 
+
+---
+
+# Kitap Nişi Bulucu
+
+Yazarın uzmanlığına ve deneyimine uyan, gerçek talebi olan ve mevcut kitapların iyi hizmet etmediği **spesifik bilgi ve rehber kitapları** bulur.
+
+**Ne yapar?**
+- **Keşif:** "Ne hakkında kitap yazsam?" sorusuna 5-8 aday kitap. Her biri için çalışma başlığı ve alt başlık, okur, talep kanıtı, rakip kitapların durumu, boşluk ve puan veriliyor. Adaylar puan matrisinde karşılaştırılıyor.
+- **Doğrulama:** Seçilen kitap fikri için tam rapor:
+  - okur kitlesi ve toplandığı yerler
+  - talep kanıtı: Amazon arama önerileri ve satış sıralamaları
+  - rakip kitaplar ve okur şikâyetleri, yapay zekaya dayanıklılık
+  - 3-5 başlık ve alt başlık seçeneği, 7 anahtar kelime, kategoriler, açıklama metni
+  - içindekiler taslağı, format, fiyat ve kapak tarifi
+  - **kitap başı kazanç** ve satış senaryoları
+  - alternatif açılar, riskler (yayın politikası, yapay zeka beyanı, hassas konular), yayın planı ve yazmadan önceki test
+
+**Güncel durumla ilgili bilinmesi gerekenler** (skill bunları her analizde resmi kaynaktan yeniden kontrol eder):
+- Amazon KDP, yapay zekayla üretilen içeriğin beyan edilmesini istiyor ve günlük yeni kitap sınırı uyguluyor.
+- KDP'nin resmi dil listesinde Türkçe yok. Türkçe kitaplar için Google Play Kitaplar, Kitapyurdu, D&R, talep üzerine baskı ve doğrudan satış yolları değerlendirilir.
+- Telif oranları ve fiyat aralıkları 2026'da değişmiş olabilir. Skill bu rakamları hafızadan yazmaz, güncel sayfadan alır.
+
+**Kullanım örnekleri:**
+- "Ne hakkında kitap yazsam? 15 yıllık yoğun bakım hemşiresiyim."
+- "Almanya'daki Türkler için niş kitap fikirleri bul."
+- "Şu kitap fikrini doğrula: yeni teşhis almış tip 1 diyabetli çocukların ebeveynleri için ilk 90 gün rehberi."
+
+Raporlar çalışma klasöründeki `kitap-raporlari/` altına kaydedilir.
+
+---
+
 ## Kurulum
+
+Aşağıdaki adımlar iki skill için de geçerlidir.
 
 ### Claude Code
 
@@ -52,12 +95,12 @@ claude plugin marketplace add mhknb/claude_web
 claude plugin install nis-fikir-bulucu@nis-fikir-bulucu
 ```
 
-Ya da elle: `skills/nis-fikir-bulucu` klasörünü `~/.claude/skills/` altına kopyalayın.
+Eklenti iki skill'i birlikte kurar. Ya da elle: `skills/nis-fikir-bulucu` ve `skills/kitap-nisi-bulucu` klasörlerini `~/.claude/skills/` altına kopyalayın.
 
 ### Claude (claude.ai web ve masaüstü uygulaması)
 
-1. Bu repoyu indirin ve `skills` klasöründe şu komutu çalıştırın: `zip -r nis-fikir-bulucu.zip nis-fikir-bulucu`
-2. Claude'da **Ayarlar → Yetenekler (Capabilities) → Skills → Skill yükle** bölümünden zip dosyasını yükleyin.
+1. Bu repoyu indirin ve `skills` klasöründe şu komutları çalıştırın: `zip -r nis-fikir-bulucu.zip nis-fikir-bulucu` ve `zip -r kitap-nisi-bulucu.zip kitap-nisi-bulucu`
+2. Claude'da **Ayarlar → Yetenekler (Capabilities) → Skills → Skill yükle** bölümünden zip dosyalarını yükleyin.
 3. Ayarlarda **kod çalıştırma** ve **web araması** açık olmalı.
 
 ### Codex, Gemini CLI, Cursor, OpenCode ve diğer Agent Skills destekleyen araçlar
@@ -66,7 +109,7 @@ Ya da elle: `skills/nis-fikir-bulucu` klasörünü `~/.claude/skills/` altına k
 npx skills add mhknb/claude_web -g
 ```
 
-Ya da `skills/nis-fikir-bulucu` klasörünü aracınızın skill klasörüne kopyalayın.
+Ya da `skills/` altındaki klasörleri aracınızın skill klasörüne kopyalayın.
 
 ### ChatGPT ve skill desteği olmayan araçlar
 
@@ -87,7 +130,7 @@ Hiçbiri zorunlu değil. Kuruluysa skill onları otomatik kullanır.
 - **founder-skill:** Claude Code'da `/plugin marketplace add Jakeschincariol/founder-skill` ve ardından `/plugin install founder-skill@founder-skill`. İyi puan alan bir fikirden sonra skill, teklif, kâr, marka ve lansman adımları için bu paketi önerir. İçindeki sanal alıcı paneli gerçek veri değildir; skill onu sadece siz isterseniz ve "simülasyon" etiketiyle kullanır.
 - **Trends MCP:** [trendsmcp.ai](https://www.trendsmcp.ai/account) adresinden ücretsiz anahtar alıp kendi sayfasındaki adımlarla ekleyin.
 
-## Kullanım örnekleri
+## Kullanım örnekleri (Niş Fikir Bulucu)
 
 - "Niş fikir bul. Türkiye pazarı, 2 kişiyiz, biri yazılımcı."
 - "Serbest çalışan muhasebeciler için SaaS fikri bul."
@@ -99,15 +142,21 @@ Raporlar çalışma klasöründeki `nis-raporlari/` altına kaydedilir: veri `.j
 ## Klasör yapısı
 
 ```
-skills/nis-fikir-bulucu/
-├── SKILL.md                 # ana talimatlar
-├── references/              # adım rehberleri: keşif, doğrulama, pivot, puanlama, veri kaynakları, ASO/SEO, rapor
-├── scripts/
-│   ├── veri.py              # App Store / Google Play / öneriler / sayfa okuma (Python, ek kurulum gerekmez)
-│   └── rapor.py             # veriyi kontrol eder, puanı hesaplar, HTML rapor üretir
-└── assets/
-    ├── rapor-sablonu.html   # grafikli rapor şablonu
-    └── semalar/             # rapor veri şemaları
+skills/
+├── nis-fikir-bulucu/
+│   ├── SKILL.md             # ana talimatlar
+│   ├── references/          # keşif, doğrulama, pivot, puanlama, veri kaynakları, ASO/SEO, rapor
+│   ├── scripts/
+│   │   ├── veri.py          # App Store / Google Play / öneriler / sayfa okuma
+│   │   └── rapor.py         # veri kontrolü, puan, birim ekonomisi, HTML rapor
+│   └── assets/              # rapor şablonu ve veri şemaları
+└── kitap-nisi-bulucu/
+    ├── SKILL.md
+    ├── references/          # keşif, doğrulama, puanlama, veri kaynakları, başlık ve anahtar kelime, yayın ve kazanç, rapor
+    ├── scripts/
+    │   ├── veri.py          # Amazon kitap önerileri / Open Library / Google Books / öneriler / sayfa okuma
+    │   └── rapor.py         # veri kontrolü, puan, kitap başı kazanç, HTML rapor
+    └── assets/
 ```
 
 ## Yöntemin kaynakları

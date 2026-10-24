@@ -51,7 +51,14 @@ Kalan her problem için somut bir ürün fikri yaz:
 - **Ürün tipi**, profildeki tercihe uygun.
 - **Boşluk:** Rakiplerin şikâyetlerinden çıkan fark.
 
-Sonra [puanlama.md](puanlama.md) basamaklarına göre 7 bileşeni puanla. Her adaya en az 3 kaynaklı kanıt ekle. Yasal risk seviyesini belirle (sağlık, finans, çocuk verisi, hukuk gibi alanlar en az "orta"dır).
+Sonra [puanlama.md](puanlama.md) basamaklarına göre 7 bileşeni puanla ve her puanın **güven düzeyini** (düşük/orta/yüksek) yaz. Her adaya en az 3 kaynaklı kanıt ekle. Yasal risk seviyesini belirle (sağlık, finans, çocuk verisi, hukuk gibi alanlar en az "orta"dır).
+
+**Çeşitlilik kuralı** (adayların aynı kalıba sıkışmaması için):
+- Aynı kitleden (ör. "diyetisyenler") en fazla 2 aday olabilir.
+- Adaylar en az 3 farklı müşteri tipine yayılmalı: profesyoneller ve küçük işletmeler, hobisine para harcayanlar, e-ticaret ve içerik üreticileri, yerel hizmet verenler, belirli bir yaşam olayını yaşayanlar (taşınma, düğün, bebek, bakım verme vb.).
+- Profil izin veriyorsa en az 2 farklı ürün türü olmalı (ör. mobil uygulama ve SaaS).
+- En az 1 aday, "X meslek grubu için Y takip yazılımı" kalıbının dışında olmalı (ör. içerik ve şablon pazarı, otomasyon, yerel bilgi ve mevzuat odaklı araç, topluluk ürünü).
+- Taramaya başlamadan önce, aklına ilk gelen 3 fikri not et ve bunları bilerek **dışarıda bırakarak** başla. İlk akla gelen fikirler genellikle herkesin aklına gelenlerdir.
 
 İstenen sayıda (varsayılan 8) aday çıkar. Kanıt bulamadığın adayı listeye ekleme; az ama sağlam aday, çok ama zayıf adaydan iyidir. Sayıyı tutturamazsan nedenini `market_notes` alanına yaz.
 

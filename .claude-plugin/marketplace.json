@@ -1,11 +1,13 @@
 {
   "name": "nis-fikir-bulucu",
-  "owner": { "name": "mhknb" },
+  "owner": {
+    "name": "mhknb"
+  },
   "plugins": [
     {
       "name": "nis-fikir-bulucu",
       "source": "./",
-      "description": "Gerçek verilerle kârlı niş ürün fikri bulma, doğrulama ve yeniden konumlandırma; grafikli HTML rapor üretir."
+      "description": "Gerçek verilerle kârlı niş ürün fikri ve satılabilir niş kitap başlığı bulma, doğrulama ve yeniden konumlandırma; grafikli HTML rapor üretir."
     }
   ]
 }

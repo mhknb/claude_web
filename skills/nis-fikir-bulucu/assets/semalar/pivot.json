@@ -161,6 +161,15 @@
           "type": "integer",
           "description": "Problemin acısı ve sıklığı: 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -168,6 +177,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
@@ -179,6 +189,15 @@
           "type": "integer",
           "description": "Para verme isteği (kanıtlı): 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -186,6 +205,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
@@ -197,6 +217,15 @@
           "type": "integer",
           "description": "Pazarda yer var mı (doygun değil): 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -204,6 +233,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
@@ -215,6 +245,15 @@
           "type": "integer",
           "description": "Kitleye ucuza ulaşılabilir mi: 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -222,6 +261,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
@@ -233,6 +273,15 @@
           "type": "integer",
           "description": "Devlerden ve yapay zeka şirketlerinden güvenli mi: 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -240,6 +289,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
@@ -251,6 +301,15 @@
           "type": "integer",
           "description": "1-2 kişi + yapay zeka ile yapılabilir mi: 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -258,6 +317,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
@@ -269,6 +329,15 @@
           "type": "integer",
           "description": "Kurucu profiline uygun mu: 0-10 arası tam sayı"
          },
+         "confidence": {
+          "type": "string",
+          "enum": [
+           "düşük",
+           "orta",
+           "yüksek"
+          ],
+          "description": "Bu puanın dayandığı kanıtın gücü. Kanıt yoksa 'düşük'."
+         },
          "reason": {
           "type": "string",
           "description": "Puanın gerekçesi, kanıta dayalı, 1-2 cümle"
@@ -276,6 +345,7 @@
         },
         "required": [
          "score",
+         "confidence",
          "reason"
         ],
         "additionalProperties": false
